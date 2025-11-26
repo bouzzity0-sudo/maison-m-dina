@@ -66,7 +66,7 @@ const Navbar = () => {
               className={`text-xl md:text-2xl lg:text-3xl font-display font-medium tracking-wide transition-colors duration-300 ${isScrolled ? 'text-noir' : 'text-white drop-shadow-md'
                 }`}
             >
-              MAISON MÉDINA
+              ATELIERS MÉDINA
             </a>
 
             {/* Desktop Navigation */}

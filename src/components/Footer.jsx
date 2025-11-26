@@ -17,7 +17,7 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <h2 className="text-xl md:text-2xl font-display font-semibold text-champagne-light mb-3 md:mb-4">
-              MAISON MÉDINA
+              ATELIERS MÉDINA
             </h2>
             <p className="text-cream/80 text-sm md:text-base leading-relaxed mb-4 md:mb-5">
               L'excellence de l'artisanat marocain directement de la médina de Fès.
