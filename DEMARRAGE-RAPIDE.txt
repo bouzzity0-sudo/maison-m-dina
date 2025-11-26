@@ -1,0 +1,53 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║     GUIDE RAPIDE - AJOUTER VOS MODÈLES AU CATALOGUE          ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+📍 ÉTAPE 1 : Ajouter vos photos
+   ────────────────────────────
+   Placez vos photos dans le dossier :
+   
+   📁 public/images/products/
+   
+   Exemples de noms :
+   • mules-marron-classiques.jpg
+   • mocassins-noir-premium.jpg
+   • sabots-beige-confort.jpg
+
+
+📍 ÉTAPE 2 : Ajouter les infos produit
+   ────────────────────────────────────
+   Ouvrez le fichier :
+   
+   📄 src/data/products.js
+   
+   Ajoutez votre produit à la fin :
+   
+   {
+     id: 5,
+     title: 'Nom du modèle',
+     category: 'MULES',
+     description: 'Description',
+     image: '/images/products/votre-photo.jpg',
+     price: '400 MAD',
+     colors: ['Marron', 'Noir'],
+     sizes: ['38', '39', '40', '41', '42', '43', '44', '45'],
+   },
+
+
+📍 ÉTAPE 3 : Voir le résultat
+   ──────────────────────────
+   Ouvrez votre navigateur :
+   
+   🌐 http://localhost:5177/
+   
+   Le site se met à jour automatiquement !
+
+
+═══════════════════════════════════════════════════════════════
+
+📚 Pour plus de détails, consultez :
+   GUIDE-AJOUTER-PRODUITS.md
+
+═══════════════════════════════════════════════════════════════
