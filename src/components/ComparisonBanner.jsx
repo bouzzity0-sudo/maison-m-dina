@@ -49,7 +49,7 @@ const ComparisonBanner = () => {
           {/* Title */}
           <div className="text-center mb-10 sm:mb-12 md:mb-16">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-charcoal mb-3 sm:mb-4">
-              Pourquoi choisir Maison Médina ?
+              Pourquoi choisir Ateliers Médina ?
             </h2>
             <p className="text-sm sm:text-base md:text-lg text-charcoal/60 max-w-2xl mx-auto">
               La différence qui fait toute la différence
@@ -87,7 +87,7 @@ const ComparisonBanner = () => {
                         </div>
                         <div className="flex-1">
                           <div className="text-[10px] font-bold text-gold-600 tracking-wide mb-0.5">
-                            Maison Médina
+                            Ateliers Médina
                           </div>
                           <div className="text-sm sm:text-base font-bold text-charcoal leading-tight">
                             {item.us}

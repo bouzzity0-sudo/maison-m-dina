@@ -1,4 +1,4 @@
-# 🚀 Plan d'Amélioration du Site Maison Médina
+# 🚀 Plan d'Amélioration du Site Ateliers Médina
 
 ## Priorité : Expérience Utilisateur, Crédibilité & Accessibilité
 
@@ -58,7 +58,7 @@ Ajoute ce composant dans App.jsx avant le Footer.
 
 **PROMPT POUR CLAUDE CODE :**
 ```
-Crée un composant TrustBadges.jsx qui affiche 4 points forts de Maison Médina.
+Crée un composant TrustBadges.jsx qui affiche 4 points forts de Ateliers Médina.
 
 Spécifications :
 - 4 cartes avec icônes (lucide-react) :
@@ -160,7 +160,7 @@ Modifie Collections.jsx pour ajouter cette fonctionnalité.
 ### 7. Améliorer l'Accessibilité
 **PROMPT POUR CLAUDE CODE :**
 ```
-Améliore l'accessibilité de tous les composants du site Maison Médina.
+Améliore l'accessibilité de tous les composants du site Ateliers Médina.
 
 Spécifications :
 - Ajouter des attributs ARIA appropriés (aria-label, aria-labelledby, role)
@@ -186,12 +186,12 @@ Utilise les meilleures pratiques WCAG 2.1 niveau AA.
 ### 8. Optimisation SEO
 **PROMPT POUR CLAUDE CODE :**
 ```
-Améliore le SEO du site Maison Médina.
+Améliore le SEO du site Ateliers Médina.
 
 Spécifications :
 - Installer react-helmet-async
 - Ajouter des balises meta dans index.html :
-  * Title : "Maison Médina - Chaussures Artisanales Marocaines | Mules & Mocassins Premium"
+  * Title : "Ateliers Médina - Chaussures Artisanales Marocaines | Mules & Mocassins Premium"
   * Description : "Découvrez notre collection de chaussures artisanales marocaines. Mules et mocassins en cuir de qualité, fabriqués à la main. Livraison partout au Maroc."
   * Keywords : "chaussures marocaines, mules artisanales, mocassins cuir, babouches premium"
   * Open Graph tags pour partage réseaux sociaux
@@ -285,7 +285,7 @@ Avant de commencer, préparez :
 - [ ] Votre numéro WhatsApp professionnel
 - [ ] Adresse email pour recevoir les formulaires
 - [ ] 3-4 vrais témoignages clients (si disponibles)
-- [ ] Logo/Favicon de Maison Médina
+- [ ] Logo/Favicon de Ateliers Médina
 
 ---
 

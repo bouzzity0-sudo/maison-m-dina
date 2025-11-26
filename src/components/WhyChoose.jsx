@@ -89,7 +89,7 @@ const WhyChoose = () => {
           className="text-center mb-10 sm:mb-12 md:mb-16 px-4"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 mb-4">
-            Pourquoi choisir Maison Médina ?
+            Pourquoi choisir Ateliers Médina ?
           </h2>
           <motion.div
             className="w-20 sm:w-24 h-1.5 bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-400 mx-auto rounded-full shadow-lg shadow-amber-400/50"

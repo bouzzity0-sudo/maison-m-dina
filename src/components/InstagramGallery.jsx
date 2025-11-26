@@ -160,7 +160,7 @@ const InstagramGallery = () => {
             Suivez-nous pour découvrir nos nouveautés et inspirations quotidiennes
           </p>
           <motion.a
-            href="https://instagram.com/maisonmedina.fr"
+            href="https://instagram.com/ateliersmedina.fr"
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05, y: -3 }}
@@ -168,7 +168,7 @@ const InstagramGallery = () => {
             className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 hover:from-purple-600 hover:via-pink-600 hover:to-purple-600 text-white px-8 py-4 rounded-full text-base sm:text-lg font-bold shadow-lg shadow-pink-400/40 hover:shadow-[0_10px_40px_rgba(236,72,153,0.6)] transition-all duration-300"
           >
             <Instagram className="w-5 h-5 sm:w-6 sm:h-6" />
-            Suivez @maisonmedina.fr
+            Suivez @ateliersmedina.fr
           </motion.a>
 
           <p className="text-sm text-gray-500 mt-6 flex items-center justify-center gap-2">

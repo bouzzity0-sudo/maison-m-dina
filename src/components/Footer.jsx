@@ -144,7 +144,7 @@ const Footer = () => {
         <div className="border-t border-cream/20 pt-6 md:pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-3 md:gap-4">
             <p className="text-cream/60 text-xs md:text-sm text-center md:text-left">
-               2024 Maison Médina  L'artisanat marocain d'excellence
+               2024 Ateliers Médina  L'artisanat marocain d'excellence
             </p>
             <p className="text-cream/60 text-xs md:text-sm text-center md:text-right">
               Fabriqué à Fès  Médina historique  Artisanat d'exception

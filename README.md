@@ -1,10 +1,10 @@
-# 🇲🇦 Maison Médina - Site Catalogue B2B Premium
+# 🇲🇦 Ateliers Médina - Site Catalogue B2B Premium
 
-Site one-page moderne et ultra-professionnel pour Maison Médina, marque de chaussures artisanales marocaines haut de gamme.
+Site one-page moderne et ultra-professionnel pour Ateliers Médina, marque de chaussures artisanales marocaines haut de gamme.
 
 ## 📋 Description
 
-Maison Médina importe des mules et mocassins artisanaux en cuir vegan de Fès (Maroc) pour les revendre aux boutiques françaises. Ce site catalogue valorise l'authenticité, le savoir-faire artisanal et la qualité premium.
+Ateliers Médina importe des mules et mocassins artisanaux en cuir vegan de Fès (Maroc) pour les revendre aux boutiques françaises. Ce site catalogue valorise l'authenticité, le savoir-faire artisanal et la qualité premium.
 
 ## ✨ Fonctionnalités
 
@@ -29,7 +29,7 @@ Maison Médina importe des mules et mocassins artisanaux en cuir vegan de Fès (
 2. **L'Héritage de Fès** - Histoire et savoir-faire
 3. **Chiffres Clés** - Statistiques importantes
 4. **Nos Collections Premium** - 4 catégories de produits
-5. **Pourquoi Choisir Maison Médina ?** - 6 avantages
+5. **Pourquoi Choisir Ateliers Médina ?** - 6 avantages
 6. **Tarification** - Prix et offres
 7. **CTA Finale** - Appel à l'action
 8. **Footer** - Contact et navigation
@@ -53,7 +53,7 @@ Maison Médina importe des mules et mocassins artisanaux en cuir vegan de Fès (
 
 1. **Cloner le projet ou naviguer dans le dossier** :
    ```bash
-   cd maison-medina
+   cd ateliers-medina
    ```
 
 2. **Installer les dépendances** :
@@ -79,7 +79,7 @@ Maison Médina importe des mules et mocassins artisanaux en cuir vegan de Fès (
 ## 📁 Structure du Projet
 
 ```
-maison-medina/
+ateliers-medina/
 ├── public/              # Fichiers statiques
 ├── src/
 │   ├── components/      # Composants React
@@ -196,7 +196,7 @@ Les fichiers optimisés seront dans le dossier `/dist`.
 
 ## 📄 License
 
-Ce projet est créé pour Maison Médina.
+Ce projet est créé pour Ateliers Médina.
 
 ## 🤝 Support
 

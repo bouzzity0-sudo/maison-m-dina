@@ -3,7 +3,7 @@ import { MessageCircle } from 'lucide-react';
 
 const WhatsAppButton = () => {
   const phoneNumber = '33786350825'; // Numéro WhatsApp français : +33 7 86 35 08 25
-  const message = encodeURIComponent('Bonjour, je suis intéressé par vos chaussures artisanales Maison Médina');
+  const message = encodeURIComponent('Bonjour, je suis intéressé par vos chaussures artisanales Ateliers Médina');
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 
   return (

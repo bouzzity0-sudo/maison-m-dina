@@ -1,4 +1,4 @@
-// Catalogue de produits Maison Médina - Collection 2025
+// Catalogue de produits Ateliers Médina - Collection 2025
 // Pour ajouter une nouvelle couleur :
 // 1. Ajoutez la photo dans public/images/products/ avec le format: MM-SAB-XXX-couleur.jpg
 // 2. Ajoutez l'objet dans colorVariants avec le code HEX exact du catalogue

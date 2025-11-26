@@ -3,8 +3,8 @@ import { Mail } from 'lucide-react';
 
 const EmailButton = () => {
   const email = 'contact@medina-shoes.com';
-  const subject = encodeURIComponent('Demande de renseignements - Maison Médina');
-  const body = encodeURIComponent('Bonjour,\n\nJe suis intéressé par vos chaussures artisanales Maison Médina.\n\nPouvez-vous me fournir plus d\'informations sur :\n- Vos tarifs B2B\n- Les conditions de commande\n- Les délais de livraison\n\nCordialement,');
+  const subject = encodeURIComponent('Demande de renseignements - Ateliers Médina');
+  const body = encodeURIComponent('Bonjour,\n\nJe suis intéressé par vos chaussures artisanales Ateliers Médina.\n\nPouvez-vous me fournir plus d\'informations sur :\n- Vos tarifs B2B\n- Les conditions de commande\n- Les délais de livraison\n\nCordialement,');
   const mailtoUrl = `mailto:${email}?subject=${subject}&body=${body}`;
 
   return (

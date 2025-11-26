@@ -137,7 +137,7 @@ const AntiChina = () => {
             </div>
           </motion.div>
 
-          {/* SOLUTIONS - Maison Médina */}
+          {/* SOLUTIONS - Ateliers Médina */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -154,7 +154,7 @@ const AntiChina = () => {
                 <CheckCircle className="w-6 h-6 text-white" strokeWidth={3} />
               </div>
               <h3 className="text-xl md:text-2xl font-black text-green-400">
-                Maison Médina
+                Ateliers Médina
               </h3>
             </div>
 

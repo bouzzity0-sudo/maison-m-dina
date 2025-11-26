@@ -42,7 +42,7 @@ const ProductModal = ({ product, isOpen, onClose }) => {
     const body = encodeURIComponent(
       `Bonjour,\n\nJe suis intéressé par le produit suivant :\n\nProduit : ${product.title}\nCouleur : ${colorName}\nPrix : ${product.price}\n\nPouvez-vous me fournir un devis ?\n\nCordialement`
     );
-    window.location.href = `mailto:contact@maisonmedina.fr?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:contact@ateliersmedina.fr?subject=${subject}&body=${body}`;
   };
 
   const handleColorChange = (colorVariant) => {
