@@ -34,6 +34,7 @@ export default {
           DEFAULT: '#C9A85C', // Champagne
           hover: '#B89548',
         },
+        charcoal: '#2C2C2C', // Gris anthracite pour les tooltips
       },
       fontFamily: {
         display: ['Unbounded', 'Playfair Display', 'serif'], // Garder Unbounded pour le côté moderne, mais en light
