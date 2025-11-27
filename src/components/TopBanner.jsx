@@ -44,7 +44,7 @@ const TopBanner = () => {
         />
 
         <div className="relative max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 md:gap-6 py-2.5 sm:py-2">
+          <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 md:gap-6 py-2.5 sm:py-2">
             {/* Icon + Offre */}
             <div className="flex items-center gap-2 sm:gap-2.5">
               <motion.div
@@ -57,13 +57,13 @@ const TopBanner = () => {
                   repeatDelay: 1,
                 }}
               >
-                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" fill="currentColor" />
+                <Sparkles className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-amber-400" fill="currentColor" />
               </motion.div>
 
               <div className="text-center sm:text-left">
-                <span className="text-xs sm:text-sm md:text-base font-bold tracking-wide text-white/90">
-                  OFFRE EXCLUSIVE : -5% sur votre 1ère commande avec{' '}
-                  <span className="inline-block bg-amber-400 px-2.5 py-0.5 rounded text-gray-900 font-black border border-amber-300">
+                <span className="text-[10px] sm:text-sm md:text-base font-bold tracking-wide text-white/90">
+                  OFFRE : -5% (1ère commande) code{' '}
+                  <span className="inline-block bg-amber-400 px-1.5 py-0.5 rounded text-gray-900 font-black border border-amber-300 ml-1">
                     FIRST5
                   </span>
                 </span>
@@ -73,8 +73,8 @@ const TopBanner = () => {
             {/* Separator - hidden on mobile */}
             <div className="hidden sm:block w-px h-4 bg-white/20" />
 
-            {/* Compte à rebours */}
-            <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm border border-white/20">
+            {/* Compte à rebours - Hidden on mobile to save space */}
+            <div className="hidden sm:flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm border border-white/20">
               <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
               <span className="text-xs sm:text-sm font-semibold text-white/90">
                 Plus que {timeLeft}
