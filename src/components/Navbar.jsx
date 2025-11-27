@@ -51,9 +51,9 @@ const Navbar = () => {
         aria-label="Menu principal"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-          ? 'bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100 py-3'
-          : 'bg-transparent py-6'
+        className={`fixed left-0 right-0 z-40 transition-all duration-500 ${isScrolled
+          ? 'top-[40px] bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100 py-3'
+          : 'top-[40px] bg-white/20 backdrop-blur-sm py-6'
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -63,8 +63,7 @@ const Navbar = () => {
               href="#hero"
               onClick={(e) => scrollToSection(e, '#hero')}
               aria-label="Ateliers Médina - Accueil"
-              className={`text-xl md:text-2xl lg:text-3xl font-display font-medium tracking-wide transition-colors duration-300 ${isScrolled ? 'text-noir' : 'text-white drop-shadow-md'
-                }`}
+              className="text-xl md:text-2xl lg:text-3xl font-display font-bold tracking-wide text-noir transition-colors duration-300 drop-shadow-sm"
             >
               ATELIERS MÉDINA
             </a>
@@ -76,10 +75,7 @@ const Navbar = () => {
                   key={link.name}
                   href={link.href}
                   onClick={(e) => scrollToSection(e, link.href)}
-                  className={`font-sans text-xs font-medium tracking-widest uppercase transition-all duration-300 hover:text-champagne ${isScrolled
-                    ? 'text-gray-600'
-                    : 'text-white/90 hover:text-white drop-shadow-sm'
-                    }`}
+                  className="font-sans text-xs font-bold tracking-widest uppercase transition-all duration-300 text-noir hover:text-champagne drop-shadow-sm"
                 >
                   {link.name}
                 </a>
@@ -90,10 +86,7 @@ const Navbar = () => {
                 aria-label="Demander un devis"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`px-6 py-3 rounded-sm font-bold text-xs tracking-widest uppercase transition-all duration-300 shadow-lg flex items-center gap-2 ${isScrolled
-                  ? 'bg-noir text-white hover:bg-gray-800'
-                  : 'bg-white text-noir hover:bg-gray-100'
-                  }`}
+                className="px-6 py-3 rounded-sm font-bold text-xs tracking-widest uppercase transition-all duration-300 shadow-lg flex items-center gap-2 bg-noir text-white hover:bg-gray-800"
               >
                 <FileText className="w-4 h-4" aria-hidden="true" />
                 Demander un devis
@@ -105,8 +98,7 @@ const Navbar = () => {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
               whileTap={{ scale: 0.95 }}
-              className={`md:hidden p-2 rounded-lg transition-colors duration-300 ${isScrolled ? 'text-noir' : 'text-white'
-                }`}
+              className="md:hidden p-2 rounded-lg transition-colors duration-300 text-noir"
             >
               {isMobileMenuOpen ? (
                 <X className="w-6 h-6" aria-hidden="true" />

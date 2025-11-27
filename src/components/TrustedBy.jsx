@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Store, MapPin, Shield, TrendingUp } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Users, Shield } from 'lucide-react';
+import CountUp from 'react-countup';
 
 const TrustedBy = () => {
   const [ref, inView] = useInView({
@@ -9,237 +9,150 @@ const TrustedBy = () => {
     threshold: 0.1,
   });
 
-  const [count, setCount] = useState(125);
-
-  // Animation du compteur
-  useEffect(() => {
-    if (inView) {
-      const interval = setInterval(() => {
-        setCount(prev => {
-          const newCount = prev + 1;
-          if (newCount >= 143) {
-            clearInterval(interval);
-            return 143;
-          }
-          return newCount;
-        });
-      }, 50);
-
-      return () => clearInterval(interval);
-    }
-  }, [inView]);
-
   const cities = [
-    { name: 'Paris', x: '48%', y: '24%' },
-    { name: 'Lyon', x: '52%', y: '45%' },
-    { name: 'Marseille', x: '54%', y: '76%' },
-    { name: 'Bordeaux', x: '18%', y: '55%' },
-    { name: 'Toulouse', x: '28%', y: '68%' },
-    { name: 'Nice', x: '72%', y: '68%' },
-    { name: 'Nantes', x: '14%', y: '35%' },
-    { name: 'Lille', x: '42%', y: '8%' },
+    { name: 'Paris', top: '24%', left: '48%' },
+    { name: 'Lyon', top: '45%', left: '52%' },
+    { name: 'Marseille', top: '76%', left: '54%' },
+    { name: 'Bordeaux', top: '55%', left: '18%' },
+    { name: 'Toulouse', top: '68%', left: '28%' },
+    { name: 'Nice', top: '68%', left: '72%' },
+    { name: 'Nantes', top: '35%', left: '14%' },
+    { name: 'Lille', top: '8%', left: '42%' },
   ];
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-white via-amber-50/30 to-white relative overflow-hidden">
+    <section className="py-12 sm:py-16 md:py-20 bg-sable-light relative overflow-hidden">
       {/* Background decorations */}
-      <div className="absolute top-0 left-0 w-64 h-64 bg-amber-200 rounded-full blur-3xl opacity-20" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-yellow-200 rounded-full blur-3xl opacity-20" />
+      <div className="absolute top-0 left-0 w-64 h-64 bg-champagne/10 rounded-full blur-3xl opacity-50" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-sable-dark/20 rounded-full blur-3xl opacity-50" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12 sm:mb-16"
-        >
-          {/* Badge */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left Column: Map & Stats */}
           <motion.div
-            initial={{ scale: 0 }}
-            animate={inView ? { scale: 1 } : {}}
-            transition={{ duration: 0.5, type: "spring", stiffness: 200 }}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-5 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-bold tracking-wider shadow-lg mb-6"
+            initial={{ opacity: 0, x: -50 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8 }}
+            className="relative"
           >
-            <Shield className="w-4 h-4" />
-            Fournisseur approuvé 2025
-          </motion.div>
+            {/* Map Container */}
+            <div className="relative w-full max-w-md mx-auto aspect-[3/4] bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden">
+              {/* Map Background (Stylized France) */}
+              <div className="absolute inset-0 opacity-20">
+                <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                  <path d="M20,80 Q50,10 80,80" stroke="#C9A85C" strokeWidth="0.5" fill="none" />
+                  <path d="M10,50 Q50,50 90,50" stroke="#C9A85C" strokeWidth="0.5" fill="none" />
+                  {/* Grid pattern */}
+                  <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#000" strokeWidth="0.5" opacity="0.1" />
+                  </pattern>
+                  <rect width="100" height="100" fill="url(#grid)" />
+                </svg>
+              </div>
 
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold text-gray-900 mb-4">
-            Ils nous font confiance
-          </h2>
+              {/* Cities */}
+              {cities.map((city, index) => (
+                <motion.div
+                  key={index}
+                  className="absolute"
+                  style={{ top: city.top, left: city.left }}
+                  initial={{ scale: 0 }}
+                  animate={inView ? { scale: 1 } : {}}
+                  transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
+                >
+                  <div className="relative group cursor-pointer">
+                    <div className="absolute -inset-2 bg-champagne/20 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="relative w-3 h-3 bg-champagne rounded-full border border-white shadow-sm" />
 
-          {/* Compteur dynamique */}
-          <motion.div
-            className="inline-block"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={inView ? { scale: 1, opacity: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <div className="bg-white rounded-2xl shadow-2xl px-8 sm:px-12 py-6 sm:py-8 border border-gray-200">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-gray-900 rounded-2xl flex items-center justify-center">
-                  <Store className="w-8 h-8 text-white" strokeWidth={1.5} />
+                    {/* Tooltip */}
+                    <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                      <div className="bg-white text-noir text-[10px] font-bold px-2 py-1 rounded shadow-lg whitespace-nowrap border border-gray-100">
+                        {city.name}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Floating Stats Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="absolute -bottom-6 -right-6 bg-white rounded-xl shadow-xl p-6 border border-gray-100 max-w-[200px]"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-champagne/10 rounded-full flex items-center justify-center">
+                  <Users className="w-5 h-5 text-champagne-dark" />
                 </div>
-                <div className="text-left">
-                  <motion.div
-                    className="text-5xl sm:text-6xl font-semibold text-gray-900"
-                    key={count}
-                  >
-                    {count}
-                  </motion.div>
-                  <p className="text-sm sm:text-base text-gray-600 font-medium">
-                    boutiques partenaires
-                  </p>
+                <div>
+                  <p className="text-2xl font-display font-bold text-noir">150+</p>
+                  <p className="text-xs text-gray-500 font-medium">Partenaires</p>
                 </div>
               </div>
-              <p className="text-xs text-gray-500 mt-4">
-                Depuis janvier 2025 en France et Europe
-              </p>
-            </div>
-          </motion.div>
-        </motion.div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-white rounded-xl shadow-lg p-6 border border-gray-200"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gray-900 rounded-2xl flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-white" strokeWidth={1.5} />
+              <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full bg-champagne"
+                  initial={{ width: 0 }}
+                  animate={inView ? { width: "85%" } : {}}
+                  transition={{ duration: 1, delay: 0.8 }}
+                />
               </div>
-              <div>
-                <div className="text-3xl font-semibold text-gray-900">73%</div>
-                <p className="text-sm text-gray-600">de réassort sous 45j</p>
-              </div>
-            </div>
+            </motion.div>
           </motion.div>
 
+          {/* Right Column: Content */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="bg-white rounded-xl shadow-lg p-6 border border-gray-200"
+            ref={ref}
+            initial={{ opacity: 0, x: 50 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8 }}
+            className="text-left"
           >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gray-900 rounded-2xl flex items-center justify-center">
-                <Store className="w-6 h-6 text-white" strokeWidth={1.5} />
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={inView ? { scale: 1 } : {}}
+              transition={{ duration: 0.5, type: "spring", stiffness: 200 }}
+              className="inline-flex items-center gap-2 bg-champagne/10 text-champagne-dark px-5 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-bold tracking-wider mb-6 border border-champagne/20"
+            >
+              <Shield className="w-4 h-4" />
+              PARTENAIRE DE CONFIANCE
+            </motion.div>
+
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-noir mb-6">
+              Ils font confiance à <br />
+              <span className="text-champagne-dark">Maison Médina</span>
+            </h2>
+
+            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+              De Paris à Marseille, les plus belles boutiques et pharmacies de France ont choisi l'excellence de nos sabots médicaux. Rejoignez un réseau d'élite qui privilégie la qualité et le confort.
+            </p>
+
+            <div className="grid grid-cols-2 gap-4 mb-8">
+              <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                <p className="text-3xl font-display font-bold text-noir mb-1">
+                  <CountUp end={98} duration={2.5} suffix="%" />
+                </p>
+                <p className="text-sm text-gray-500">Taux de satisfaction</p>
               </div>
-              <div>
-                <div className="text-3xl font-semibold text-gray-900">4.9/5</div>
-                <p className="text-sm text-gray-600">satisfaction moyenne</p>
+              <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                <p className="text-3xl font-display font-bold text-noir mb-1">
+                  <CountUp end={48} duration={2.5} suffix="h" />
+                </p>
+                <p className="text-sm text-gray-500">Expédition moyenne</p>
               </div>
             </div>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="bg-white rounded-xl shadow-lg p-6 border border-gray-200"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gray-900 rounded-2xl flex items-center justify-center">
-                <MapPin className="w-6 h-6 text-white" strokeWidth={1.5} />
-              </div>
-              <div>
-                <div className="text-3xl font-semibold text-gray-900">6,2j</div>
-                <p className="text-sm text-gray-600">délai moyen livraison</p>
-              </div>
+            <div className="flex flex-wrap gap-3">
+              {['Pharmacies', 'Concept Stores', 'Boutiques Mode', 'Instituts'].map((tag, i) => (
+                <span key={i} className="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-600 font-medium shadow-sm">
+                  {tag}
+                </span>
+              ))}
             </div>
           </motion.div>
         </div>
-
-        {/* Mini Map France */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={inView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.7 }}
-          className="bg-white rounded-2xl shadow-xl p-8 sm:p-12 max-w-3xl mx-auto"
-        >
-          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 text-center mb-8">
-            Nos boutiques partenaires en France
-          </h3>
-
-          {/* Simple France representation */}
-          <div className="relative w-full max-w-md mx-auto aspect-[3/4] bg-gradient-to-br from-blue-50 to-gray-50 rounded-2xl border-2 border-gray-300 overflow-hidden">
-            {/* France outline simplified */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-40">
-              <svg viewBox="0 0 200 250" className="w-full h-full">
-                <path d="M 100,20 L 150,60 L 180,120 L 170,180 L 140,220 L 80,230 L 40,200 L 30,140 L 50,80 Z"
-                      fill="currentColor"
-                      className="text-blue-200" />
-              </svg>
-            </div>
-
-            {/* City markers */}
-            {cities.map((city, index) => (
-              <motion.div
-                key={city.name}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={inView ? { scale: 1, opacity: 1 } : {}}
-                transition={{ duration: 0.4, delay: 0.8 + index * 0.1 }}
-                className="absolute"
-                style={{ left: city.x, top: city.y, transform: 'translate(-50%, -50%)' }}
-              >
-                <motion.div
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [1, 0.7, 1]
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    delay: index * 0.3
-                  }}
-                  className="relative"
-                >
-                  {/* Pulse effect */}
-                  <div className="absolute inset-0 bg-amber-400 rounded-full animate-ping opacity-75" />
-                  {/* Marker */}
-                  <div className="relative w-4 h-4 bg-amber-500 rounded-full border-2 border-white shadow-lg" />
-                </motion.div>
-                {/* City name */}
-                <div className="absolute top-6 left-1/2 -translate-x-1/2 whitespace-nowrap">
-                  <span className="text-xs font-semibold text-gray-700 bg-white px-2 py-1 rounded shadow-md">
-                    {city.name}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <p className="text-center text-sm text-gray-500 mt-6">
-            Distribution dans toute la France • Expansion en cours en Belgique, Suisse et Espagne
-          </p>
-        </motion.div>
-
-        {/* Boutique names (generic) */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 1 }}
-          className="mt-12 text-center"
-        >
-          <p className="text-sm text-gray-500 mb-4">Nos boutiques partenaires</p>
-          <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-8">
-            {['Chaussures Élégance', 'Boutique Bohème', 'Shoes and Co', 'Style Urbain', 'Mode et Tendances', 'Concept Store'].map((name, index) => (
-              <motion.div
-                key={name}
-                initial={{ opacity: 0 }}
-                animate={inView ? { opacity: 1 } : {}}
-                transition={{ duration: 0.4, delay: 1.1 + index * 0.1 }}
-                className="text-gray-400 font-semibold text-sm sm:text-base px-4 py-2 bg-white rounded-lg shadow-sm border border-gray-100"
-              >
-                {name}
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );

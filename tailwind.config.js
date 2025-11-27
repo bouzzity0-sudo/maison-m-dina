@@ -7,16 +7,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Nouvelle Palette Premium Moderne - Luxe Minimaliste
+        // Palette Maison Médina (Originale & Premium)
         noir: {
           DEFAULT: '#0A0A0A',
           light: '#1A1A1A',
           lighter: '#2A2A2A',
-        },
-        anthracite: {
-          DEFAULT: '#1A1A1A',
-          light: '#2D2D2D',
-          lighter: '#404040',
         },
         sable: {
           DEFAULT: '#F5F1E8',
@@ -28,50 +23,23 @@ export default {
           light: '#D4B870',
           dark: '#B89548',
         },
-        // Couleurs d'accent subtiles
+        // Mappings pour la compatibilité
+        background: '#FAFAF8', // Sable très clair
+        surface: '#FFFFFF', // Blanc
+        text: {
+          DEFAULT: '#0A0A0A', // Noir
+          muted: '#666666',
+        },
         accent: {
-          rose: '#B87F7A',
-          cuivre: '#A67C52',
-        },
-        // Anciennes couleurs (transition progressive)
-        gold: {
-          50: '#FDFBF7',
-          100: '#F9F3E8',
-          200: '#F0E4C8',
-          300: '#E5D4A8',
-          400: '#C9A85C', // Maintenant champagne
-          500: '#C9A85C',
-          600: '#B8956A',
-        },
-        copper: '#A67C52',
-        charcoal: {
-          DEFAULT: '#1A1A1A',
-          light: '#2D2D2D',
-          dark: '#0A0A0A',
-        },
-        terracotta: {
-          DEFAULT: '#B87F7A',
-          light: '#C89691',
-          dark: '#A06B66',
-        },
-        sand: {
-          DEFAULT: '#E8DCC4',
-          light: '#F5F1E8',
-        },
-        cream: '#FAFAF8',
-        sienna: {
-          light: '#C89691',
-          DEFAULT: '#B87F7A',
-        },
-        brown: {
-          deep: '#0A0A0A',
-          medium: '#1A1A1A',
+          DEFAULT: '#C9A85C', // Champagne
+          hover: '#B89548',
         },
       },
       fontFamily: {
-        serif: ['Playfair Display', 'Cormorant Garamond', 'serif'],
-        sans: ['DM Sans', 'Inter', 'sans-serif'],
-        display: ['Playfair Display', 'serif'],
+        display: ['Unbounded', 'Playfair Display', 'serif'], // Garder Unbounded pour le côté moderne, mais en light
+        sans: ['DM Sans', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+        serif: ['Playfair Display', 'serif'],
       },
       boxShadow: {
         // Ombres modernes et subtiles

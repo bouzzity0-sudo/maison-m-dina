@@ -1,8 +1,8 @@
 import SkipLink from './components/SkipLink';
 import Navbar from './components/Navbar';
 import TopBanner from './components/TopBanner';
-import Hero from './components/Hero';
-import TrustedBy from './components/TrustedBy';
+import AnimatedHero from './components/AnimatedHero';
+
 import ComparisonBanner from './components/ComparisonBanner';
 import Bestsellers from './components/Bestsellers';
 import Collections from './components/Collections';
@@ -24,21 +24,29 @@ import WhatsAppButton from './components/WhatsAppButton';
 import EmailButton from './components/EmailButton';
 import ScrollToTop from './components/ScrollToTop';
 import StickyCTA from './components/StickyCTA';
+import VelocityHero from './components/VelocityHero';
+
+import CustomCursor from './components/ui/CustomCursor';
+
+import GlobalSpotlight from './components/GlobalSpotlight';
 
 function App() {
   return (
-    <div className="min-h-screen">
+    <div className="bg-sable-light min-h-screen text-noir selection:bg-champagne selection:text-white">
+      <GlobalSpotlight />
       <SkipLink />
       <TopBanner />
       <header>
         <Navbar />
       </header>
       <main id="main-content">
-        <Hero />
-        <TrustedBy />
+        <VelocityHero />
+
+
         <ComparisonBanner />
         <Bestsellers />
         <Collections />
+        <QuoteCalculator />
         <InstagramGallery />
         <TrustBadges />
         <WhyChoose />
@@ -47,7 +55,6 @@ function App() {
         <Testimonials />
         <KeyStats />
         <HowItWorks />
-        <QuoteCalculator />
         <Pricing />
         <FAQ />
         <ContactForm />

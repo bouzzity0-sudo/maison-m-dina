@@ -10,7 +10,7 @@ const EmailButton = () => {
   return (
     <motion.a
       href={mailtoUrl}
-      className="fixed bottom-20 right-4 sm:bottom-24 sm:right-5 md:bottom-[88px] md:right-6 z-50 bg-accent-rose text-white rounded-full p-3.5 sm:p-4 shadow-lg active:shadow-md md:hover:shadow-xl transition-shadow duration-300 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-accent-rose min-w-[56px] min-h-[56px] flex items-center justify-center"
+      className="fixed bottom-20 right-4 sm:bottom-24 sm:right-5 md:bottom-[88px] md:right-6 z-[100] bg-champagne text-white rounded-full p-3.5 sm:p-4 shadow-lg active:shadow-md md:hover:shadow-xl transition-all duration-300 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-champagne min-w-[56px] min-h-[56px] flex items-center justify-center"
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.5, delay: 1.2 }}

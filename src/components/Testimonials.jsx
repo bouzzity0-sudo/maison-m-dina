@@ -11,30 +11,30 @@ const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: "Laurent Beaumont",
-      company: "Chaussures Élégance - Aix-en-Provence",
+      name: "Laurent",
+      company: "Boutique Partenaire - Aix-en-Provence",
       text: "3ème commande en 2 mois ! Le modèle MM-SAB-002 en noir part en 10 jours chrono. Mes clientes adorent le rapport qualité-prix. Marge de 18€/paire, je recommande les yeux fermés.",
-      initials: "LB",
+      initials: "L",
       color: "#C67C4E",
       date: "Il y a 2 semaines",
       verified: true
     },
     {
       id: 2,
-      name: "Sophie Marchand",
-      company: "Boutique Bohème - Lyon 6ème",
+      name: "Sophie",
+      company: "Concept Store - Lyon 6ème",
       text: "Enfin un fournisseur qui comprend ! Les lots personnalisés par taille changent tout. Fini le stock mort de 36-37. Le camel et le beige nude s'arrachent. Livraison en 5 jours pile.",
-      initials: "SM",
+      initials: "S",
       color: "#2C2C2C",
       date: "Il y a 1 mois",
       verified: true
     },
     {
       id: 3,
-      name: "David Chen",
-      company: "Shoes and Co - Bordeaux",
+      name: "David",
+      company: "Chaussures & Accessoires - Bordeaux",
       text: "Qualité bluffante pour le prix. Les finitions cousues tiennent la route face à mes fournisseurs à 25€. Le modèle compensé (MM-SAB-004) fait un carton en ce moment. Service réactif sur WhatsApp.",
-      initials: "DC",
+      initials: "D",
       color: "#C67C4E",
       date: "Il y a 3 semaines",
       verified: true

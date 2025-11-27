@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@200;400;600;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,14 +7,13 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    background-color: #FAFAF8;
   }
 
   body {
-    font-family: 'DM Sans', sans-serif;
-    color: #1A1A1A;
+    @apply font-sans text-noir antialiased;
     background-color: #FAFAF8;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   h1,
@@ -23,13 +22,12 @@
   h4,
   h5,
   h6 {
-    font-family: 'Cormorant Garamond', serif;
+    @apply font-display uppercase tracking-wider text-noir;
   }
-}
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  h5,
+  h6 {
+    font-family: 'Cormorant Garamond', serif;
   }
 
   /* Shimmer animation for top banner */
