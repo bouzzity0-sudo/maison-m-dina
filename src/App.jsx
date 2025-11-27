@@ -4,6 +4,9 @@ import TopBanner from './components/TopBanner';
 import AnimatedHero from './components/AnimatedHero';
 
 import ComparisonBanner from './components/ComparisonBanner';
+import ColorsSection from './components/ColorsSection';
+import ComfortSection from './components/ComfortSection';
+import PlatformsSection from './components/PlatformsSection';
 import Bestsellers from './components/Bestsellers';
 import Collections from './components/Collections';
 import InstagramGallery from './components/InstagramGallery';
@@ -40,24 +43,47 @@ function App() {
         <Navbar />
       </header>
       <main id="main-content">
-        <VelocityHero />
-
+        <section id="hero">
+          <VelocityHero />
+        </section>
 
         <ComparisonBanner />
+        <ColorsSection />
+        <ComfortSection />
+        <PlatformsSection />
         <Bestsellers />
-        <Collections />
+
+        <section id="collections">
+          <Collections />
+        </section>
+
         <QuoteCalculator />
         <InstagramGallery />
         <TrustBadges />
-        <WhyChoose />
-        <Heritage />
+
+        <section id="avantages">
+          <WhyChoose />
+        </section>
+
+        <section id="savoir-faire">
+          <Heritage />
+        </section>
+
         <SocialProof />
         <Testimonials />
         <KeyStats />
         <HowItWorks />
-        <Pricing />
+
+        <section id="tarifs">
+          <Pricing />
+        </section>
+
         <FAQ />
-        <ContactForm />
+
+        <section id="contact">
+          <ContactForm />
+        </section>
+
         <CTA />
       </main>
       <Footer />

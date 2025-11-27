@@ -30,7 +30,7 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Accueil', href: '#hero' },
     { name: 'Collections', href: '#collections' },
-    { name: 'Savoir-faire', href: '#heritage' },
+    { name: 'Savoir-faire', href: '#savoir-faire' },
     { name: 'Avantages', href: '#avantages' },
     { name: 'Tarifs', href: '#tarifs' },
     { name: 'Contact', href: '#contact' },

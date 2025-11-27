@@ -1,0 +1,24 @@
+{
+    "rewrites": [
+        {
+            "source": "/collections",
+            "destination": "/#collections"
+        },
+        {
+            "source": "/savoir-faire",
+            "destination": "/#savoir-faire"
+        },
+        {
+            "source": "/avantages",
+            "destination": "/#avantages"
+        },
+        {
+            "source": "/tarifs",
+            "destination": "/#tarifs"
+        },
+        {
+            "source": "/contact",
+            "destination": "/#contact"
+        }
+    ]
+}
