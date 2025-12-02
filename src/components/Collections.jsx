@@ -282,8 +282,8 @@ const ProductModal = ({ product, isOpen, onClose }) => {
                         {/* Pastille de couleur - Premium */}
                         <div
                           className={`w-12 h-12 rounded-full transition-all shadow-sm ${selectedColor?.name === colorVariant.name
-                              ? 'ring-3 ring-gray-900 ring-offset-2 scale-110'
-                              : 'ring-1 ring-gray-200 group-hover:ring-2 group-hover:ring-gray-400'
+                            ? 'ring-3 ring-gray-900 ring-offset-2 scale-110'
+                            : 'ring-1 ring-gray-200 group-hover:ring-2 group-hover:ring-gray-400'
                             }`}
                           style={{ backgroundColor: colorVariant.hexCode }}
                         >
@@ -305,8 +305,8 @@ const ProductModal = ({ product, isOpen, onClose }) => {
                         </div>
                         {/* Nom de la couleur */}
                         <span className={`text-[10px] text-center leading-tight ${selectedColor?.name === colorVariant.name
-                            ? 'text-gray-900 font-semibold'
-                            : 'text-gray-600'
+                          ? 'text-gray-900 font-semibold'
+                          : 'text-gray-600'
                           }`}>
                           {colorVariant.name}
                         </span>
@@ -518,6 +518,50 @@ const ProductCard = ({ product, delay }) => {
                 Tendance
               </motion.span>
             )}
+
+            {product.badges?.includes('12_colors') && (
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="inline-block bg-white border border-gray-200 text-gray-900 px-2.5 sm:px-3 py-1 rounded-full text-[9px] sm:text-[10px] font-bold tracking-wide shadow-md flex items-center gap-1"
+              >
+                <span className="w-2 h-2 rounded-full bg-gradient-to-r from-red-500 via-green-500 to-blue-500"></span>
+                Jusqu'à 12 Couleurs
+              </motion.span>
+            )}
+
+            {product.badges?.includes('comfort_plus') && (
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="inline-block bg-blue-50 text-blue-700 border border-blue-100 px-2.5 sm:px-3 py-1 rounded-full text-[9px] sm:text-[10px] font-bold tracking-wide shadow-sm flex items-center gap-1"
+              >
+                <span className="text-lg leading-none">☁️</span>
+                Confort +
+              </motion.span>
+            )}
+
+            {product.badges?.includes('platform_premium') && (
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="inline-block bg-purple-50 text-purple-700 border border-purple-100 px-2.5 sm:px-3 py-1 rounded-full text-[9px] sm:text-[10px] font-bold tracking-wide shadow-sm flex items-center gap-1"
+              >
+                <span className="text-lg leading-none">✨</span>
+                Plateforme
+              </motion.span>
+            )}
+
+            {product.badges?.includes('high_margin') && (
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="inline-block bg-green-50 text-green-700 border border-green-100 px-2.5 sm:px-3 py-1 rounded-full text-[9px] sm:text-[10px] font-bold tracking-wide shadow-sm flex items-center gap-1"
+              >
+                <span className="text-lg leading-none">💰</span>
+                Haute Marge
+              </motion.span>
+            )}
           </div>
         </div>
 
@@ -555,8 +599,8 @@ const ProductCard = ({ product, delay }) => {
                   >
                     <motion.div
                       className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 shadow-md cursor-pointer ring-1 transition-all ${currentImage === colorVariant.image
-                          ? 'border-champagne ring-champagne'
-                          : 'border-white ring-charcoal/10 group-hover/color:border-champagne group-hover/color:ring-champagne'
+                        ? 'border-champagne ring-champagne'
+                        : 'border-white ring-charcoal/10 group-hover/color:border-champagne group-hover/color:ring-champagne'
                         }`}
                       style={{ backgroundColor: colorVariant.hexCode }}
                       aria-label={colorVariant.name}
@@ -713,8 +757,8 @@ const Collections = () => {
                 whileTap={{ scale: 0.95 }}
                 whileHover={{ scale: 1.02, y: -2 }}
                 className={`px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold transition-all duration-500 text-sm sm:text-base md:text-lg min-h-[56px] ${activeFilter === filter.id
-                    ? 'bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-400 text-black shadow-lg shadow-amber-400/50'
-                    : 'bg-white text-charcoal border-2 border-amber-200/60 hover:border-amber-400 shadow-md hover:shadow-lg'
+                  ? 'bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-400 text-black shadow-lg shadow-amber-400/50'
+                  : 'bg-white text-charcoal border-2 border-amber-200/60 hover:border-amber-400 shadow-md hover:shadow-lg'
                   }`}
               >
                 {filter.label}

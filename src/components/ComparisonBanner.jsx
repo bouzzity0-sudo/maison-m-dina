@@ -11,23 +11,23 @@ const ComparisonBanner = () => {
   const advantages = [
     {
       title: 'Commande minimum',
-      us: '30 paires seulement',
+      us: '100 paires minimum',
       them: '500 paires minimum',
     },
     {
       title: 'Délai de livraison',
-      us: '4-7 jours express',
-      them: '45-60 jours d\'attente',
+      us: '14 jours express',
+      them: '60-90 jours d\'attente',
+    },
+    {
+      title: 'Confort',
+      us: 'Semelle ergonomique testée',
+      them: 'Confort basique',
     },
     {
       title: 'Choix des tailles',
       us: 'Totalement personnalisé',
       them: 'Tailles imposées',
-    },
-    {
-      title: 'Qualité matériaux',
-      us: 'Contrôle qualité constant',
-      them: 'Qualité variable',
     },
   ];
 
@@ -69,7 +69,7 @@ const ComparisonBanner = () => {
                 <div className="relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden h-full">
                   {/* Gradient top accent */}
                   <div className="h-1.5 bg-gradient-to-r from-gold-400 via-gold-500 to-copper" />
-                  
+
                   <div className="p-5 sm:p-6">
                     {/* Category */}
                     <h3 className="text-xs sm:text-sm font-bold text-charcoal/50 tracking-wider mb-4 sm:mb-5">
@@ -81,7 +81,7 @@ const ComparisonBanner = () => {
                       <div className="flex items-start gap-2 sm:gap-3 p-3 sm:p-4 bg-gradient-to-br from-gold-50 to-gold-100/50 rounded-xl border-2 border-gold-400 relative overflow-hidden">
                         {/* Shine effect */}
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-1000" />
-                        
+
                         <div className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-br from-gold-500 to-copper rounded-full flex items-center justify-center">
                           <Check className="w-3 h-3 sm:w-4 sm:h-4 text-white" strokeWidth={3} />
                         </div>

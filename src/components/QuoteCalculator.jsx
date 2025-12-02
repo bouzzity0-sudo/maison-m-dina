@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Calculator, TrendingUp, Mail, CheckCircle } from 'lucide-react';
+import { Calculator, TrendingUp, Mail, CheckCircle, ChevronDown } from 'lucide-react';
 import { products } from '../data/products';
 
 const QuoteCalculator = () => {
@@ -13,6 +13,7 @@ const QuoteCalculator = () => {
   const [selectedProduct, setSelectedProduct] = useState(products[0]);
   const [selectedColor, setSelectedColor] = useState(products[0].colorVariants?.[0] || null);
   const [currentImage, setCurrentImage] = useState(products[0].colorVariants?.[0]?.image || products[0].image);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [sizes, setSizes] = useState({
     36: 0,
     37: 0,
@@ -140,7 +141,7 @@ const QuoteCalculator = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Column 1: Image (Large) */}
-              <div className="bg-sable-light border border-noir/5 rounded-none p-6 flex items-center justify-center h-full min-h-[300px] relative group">
+              <div className="bg-white rounded-none flex items-center justify-center h-full min-h-[300px] relative group overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(201,168,92,0.1),transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity" />
                 <img
                   src={currentImage}
@@ -159,22 +160,47 @@ const QuoteCalculator = () => {
 
               {/* Column 2: Controls */}
               <div className="space-y-6">
-                {/* Product Selection */}
-                <div>
+                {/* Product Selection (Custom Dropdown) */}
+                <div className="relative">
                   <label className="block text-sm font-mono text-noir/60 mb-2 uppercase">
                     1. Modèle
                   </label>
-                  <select
-                    value={selectedProduct.id}
-                    onChange={handleProductChange}
-                    className="w-full px-4 py-3 bg-sable-light border border-noir/10 text-noir rounded-none focus:outline-none focus:border-champagne transition-all text-lg font-display uppercase tracking-wide"
+
+                  <button
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="w-full px-4 py-3 bg-white border border-noir/10 text-noir flex items-center justify-between hover:border-champagne transition-colors group"
                   >
-                    {products.map(product => (
-                      <option key={product.id} value={product.id} className="bg-white text-noir">
-                        {product.title}
-                      </option>
-                    ))}
-                  </select>
+                    <span className="font-display uppercase tracking-wide text-lg text-left truncate pr-4">
+                      {selectedProduct.title}
+                    </span>
+                    <ChevronDown
+                      className={`w-5 h-5 text-noir/40 group-hover:text-champagne transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
+                    />
+                  </button>
+
+                  {isDropdownOpen && (
+                    <div className="absolute top-full left-0 w-full mt-1 bg-white border border-noir/10 shadow-xl z-50 max-h-[300px] overflow-y-auto">
+                      {products.map(product => (
+                        <button
+                          key={product.id}
+                          onClick={() => {
+                            const event = { target: { value: product.id } }; // Mimic event for existing handler
+                            handleProductChange(event);
+                            setIsDropdownOpen(false);
+                          }}
+                          className={`w-full px-4 py-3 text-left hover:bg-sable-light transition-colors flex items-center justify-between group ${selectedProduct.id === product.id ? 'bg-sable-light' : ''}`}
+                        >
+                          <span className={`font-display uppercase text-sm ${selectedProduct.id === product.id ? 'text-champagne-dark' : 'text-noir group-hover:text-noir'}`}>
+                            {product.title}
+                          </span>
+                          {selectedProduct.id === product.id && (
+                            <div className="w-2 h-2 rounded-full bg-champagne" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
                   <p className="text-right text-champagne-dark font-mono text-sm mt-1">
                     {selectedProduct.priceB2B.toFixed(2)}€ / paire
                   </p>

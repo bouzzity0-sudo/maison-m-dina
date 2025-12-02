@@ -10,19 +10,47 @@ export const products = [
     code: 'MM-SAB-001',
     title: 'Sabot Boucle Classique',
     category: 'MULES',
-    description: 'Simili-daim mat • Boucle latérale réglable • Semelle liège pailletée dorée',
+    description: 'Cuir vegan premium finition daim • Confort exceptionnel toute la journée • Boucle latérale réglable • Semelle liège ergonomique',
     image: '/images/products/Modele.simple.boucle/MM-SAB-001-camel.jpg',
     price: '13,49€ TTC',
     priceB2B: 13.49,
     sizes: ['36', '37', '38', '39', '40', '41'],
-    badges: ['bestseller'],
+    badges: ['bestseller', '12_colors'],
     colorVariants: [
+      { name: 'Rose poudré', image: '/images/products/MM-SAB-007-rose.jpg', hexCode: '#D4A5A5' },
+      { name: 'Vert sauge', image: '/images/products/modele.strass/MM-SAB-002-kaki.jpg', hexCode: '#7A7A52' },
+      { name: 'Terracotta', image: '/images/products/MM-SAB-007-orange.jpg', hexCode: '#E67E50' },
+      { name: 'Ocre', image: '/images/products/modele.strass/MM-SAB-002-moutarde.jpg', hexCode: '#D4A23A' },
+      { name: 'Beige nude', image: '/images/products/MM-SAB-007-nude.jpg', hexCode: '#E5D4C1' },
       { name: 'Camel', image: '/images/products/Modele.simple.boucle/MM-SAB-001-camel.jpg', hexCode: '#C4915B' },
-      { name: 'Taupe clair', image: '/images/products/Modele.simple.boucle/MM-SAB-001-taupe-clair.jpg', hexCode: '#B8A894' },
       { name: 'Noir', image: '/images/products/Modele.simple.boucle/MM-SAB-001-noir.jpg', hexCode: '#1A1A1A' },
-      { name: 'Taupe moyen', image: '/images/products/Modele.simple.boucle/MM-SAB-001-taupe-moyen.jpg', hexCode: '#9B8573' },
       { name: 'Bordeaux', image: '/images/products/Modele.simple.boucle/MM-SAB-001-bordeaux.jpg', hexCode: '#6B4347' },
-      { name: 'Kaki', image: '/images/products/Modele.simple.boucle/MM-SAB-001-kaki.jpg', hexCode: '#5C5E47' }
+      { name: 'Bleu jean', image: '/images/products/modele.strass/MM-SAB-002-bleu.jpg', hexCode: '#4A7BA7' },
+      { name: 'Gris anthracite', image: '/images/products/Modele.simple.boucle/MM-SAB-001-taupe-moyen.jpg', hexCode: '#333333' },
+      { name: 'Taupe', image: '/images/products/Modele.simple.boucle/MM-SAB-001-taupe-clair.jpg', hexCode: '#B8A894' },
+      { name: 'Cognac', image: '/images/products/modele.strass/MM-SAB-002-marron.jpg', hexCode: '#8B5A3C' }
+    ]
+  },
+
+  // MM-SAB-007 • SABOT BOUCLE APPARENTE (Ex-Professionnel)
+  {
+    id: 7,
+    code: 'MM-SAB-007',
+    title: 'Sabot Boucle Apparente',
+    category: 'MULES',
+    description: 'Cuir vegan lisse • Confort exceptionnel • Grande boucle apparente • Semelle noire rainurée antidérapante',
+    image: '/images/products/MM-SAB-007-noir.jpg',
+    price: '13,49€ TTC',
+    priceB2B: 13.49,
+    sizes: ['36', '37', '38', '39', '40', '41'],
+    colorVariants: [
+      { name: 'Noir', image: '/images/products/MM-SAB-007-noir.jpg', hexCode: '#000000' },
+      { name: 'Blanc', image: '/images/products/MM-SAB-007-blanc.jpg', hexCode: '#F5F5F5' },
+      { name: 'Rose poudré', image: '/images/products/MM-SAB-007-rose.jpg', hexCode: '#D4A5A5' },
+      { name: 'Orange', image: '/images/products/MM-SAB-007-orange.jpg', hexCode: '#E67E50' },
+      { name: 'Bleu ciel', image: '/images/products/MM-SAB-007-bleu.jpg', hexCode: '#87CEEB' },
+      { name: 'Beige nude', image: '/images/products/MM-SAB-007-nude.jpg', hexCode: '#E5D4C1' },
+      { name: 'Bordeaux', image: '/images/products/MM-SAB-007-bordeaux.png', hexCode: '#6B4347' }
     ]
   },
 
@@ -32,12 +60,12 @@ export const products = [
     code: 'MM-SAB-002',
     title: 'Sabot Perforé Strass',
     category: 'MULES',
-    description: 'Simili-daim • Perforations décoratives strass/clous dorés • Bride ajustable • Semelle liège pailletée',
+    description: 'Cuir vegan premium • Confort exceptionnel • Perforations décoratives strass/clous dorés • Semelle ergonomique',
     image: '/images/products/modele.strass/MM-SAB-002-noir.jpg',
     price: '13,99€ TTC',
     priceB2B: 13.99,
     sizes: ['36', '37', '38', '39', '40', '41'],
-    badges: ['bestseller', 'trending'],
+    badges: ['bestseller', 'trending', 'comfort_plus', '12_colors'],
     colorVariants: [
       { name: 'Noir', image: '/images/products/modele.strass/MM-SAB-002-noir.jpg', hexCode: '#1C1C1C' },
       { name: 'Bleu jean', image: '/images/products/modele.strass/MM-SAB-002-bleu.jpg', hexCode: '#4A7BA7' },
@@ -57,7 +85,7 @@ export const products = [
     code: 'MM-SAB-003',
     title: 'Sabot Minimaliste',
     category: 'MULES',
-    description: 'Simili-daim • Design épuré sans ornements • Découpe mocassin • Semelle liège pailletée',
+    description: 'Cuir vegan premium • Confort exceptionnel • Design épuré sans ornements • Semelle liège ergonomique',
     image: '/images/products/Modele 4/noir.jpg',
     price: '13,99€ TTC',
     priceB2B: 13.99,
@@ -81,12 +109,12 @@ export const products = [
     code: 'MM-SAB-004',
     title: 'Sabot Boucle Semelle Compensée',
     category: 'MULES',
-    description: 'Simili-daim • Boucle latérale • Semelle compensée épaisse 3-4cm • Effet plateforme confort',
+    description: 'Cuir vegan premium • Confort exceptionnel • Semelle compensée épaisse 3-4cm • Effet plateforme',
     image: '/images/products/MM-SAB-004-noir.jpg',
     price: '14,99€ TTC',
     priceB2B: 14.99,
     sizes: ['36', '37', '38', '39', '40', '41'],
-    badges: ['trending'],
+    badges: ['trending', 'platform_premium', 'high_margin'],
     colorVariants: [
       { name: 'Noir total', image: '/images/products/MM-SAB-004-noir.jpg', hexCode: '#000000' },
       { name: 'Fuchsia', image: '/images/products/MM-SAB-004-fuchsia.jpg', hexCode: '#E91E63' },
@@ -101,7 +129,7 @@ export const products = [
     code: 'MM-SAB-005',
     title: 'Sabot avec Charm Pendentif',
     category: 'MULES',
-    description: 'Simili-daim • Pendentif/charm métallique doré décoratif • Semelle liège pailletée',
+    description: 'Cuir vegan premium • Confort exceptionnel • Pendentif doré décoratif • Semelle liège ergonomique',
     image: '/images/products/MM-SAB-005-noir.jpg',
     price: '14,50€ TTC',
     priceB2B: 14.50,
@@ -123,7 +151,7 @@ export const products = [
     code: 'MM-SAB-006',
     title: 'Sabot Bi-Matière Tissé',
     category: 'MULES',
-    description: 'Simili-daim + Tissu jean/lin • Boucle latérale • Mélange de textures • Semelle liège pailletée',
+    description: 'Cuir vegan premium + Tissu • Confort exceptionnel • Mélange de textures • Semelle liège ergonomique',
     image: '/images/products/MM-SAB-006-bleu-ciel.jpg',
     price: '13,99€ TTC',
     priceB2B: 13.99,
@@ -133,27 +161,6 @@ export const products = [
       { name: 'Bleu marine denim', image: '/images/products/MM-SAB-006-marine.jpg', hexCode: '#1E3A5F' },
       { name: 'Rose orange', image: '/images/products/MM-SAB-006-rose.jpg', hexCode: '#E67E50' },
       { name: 'Beige lin', image: '/images/products/MM-SAB-006-beige.jpg', hexCode: '#E5DDD1' }
-    ]
-  },
-
-  // MM-SAB-007 • SABOT CUIR LISSE PROFESSIONNEL
-  {
-    id: 7,
-    code: 'MM-SAB-007',
-    title: 'Sabot Cuir Lisse Professionnel',
-    category: 'MULES',
-    description: 'Cuir vegan lisse • Boucle réglable • Semelle noire rainurée antidérapante • Facile d\'entretien',
-    image: '/images/products/MM-SAB-007-noir.jpg',
-    price: '13,49€ TTC',
-    priceB2B: 13.49,
-    sizes: ['36', '37', '38', '39', '40', '41'],
-    colorVariants: [
-      { name: 'Noir', image: '/images/products/MM-SAB-007-noir.jpg', hexCode: '#000000' },
-      { name: 'Blanc', image: '/images/products/MM-SAB-007-blanc.jpg', hexCode: '#F5F5F5' },
-      { name: 'Rose poudré', image: '/images/products/MM-SAB-007-rose.jpg', hexCode: '#D4A5A5' },
-      { name: 'Orange', image: '/images/products/MM-SAB-007-orange.jpg', hexCode: '#E67E50' },
-      { name: 'Bleu ciel', image: '/images/products/MM-SAB-007-bleu.jpg', hexCode: '#87CEEB' },
-      { name: 'Beige nude', image: '/images/products/MM-SAB-007-nude.jpg', hexCode: '#E5D4C1' }
     ]
   }
 ];

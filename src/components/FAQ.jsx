@@ -71,32 +71,32 @@ const FAQ = () => {
     {
       icon: Package,
       question: "Quelle est la quantité minimum de commande ?",
-      answer: "Nous acceptons les commandes à partir de 30 paires seulement ! Vous pouvez composer vos lots de 12 paires avec les tailles de votre choix (36-41), sans être obligé de prendre les tailles 36-37 qui se vendent moins. Flexibilité totale pour optimiser votre stock."
+      answer: "Nous acceptons les commandes à partir de 100 paires. Vous pouvez panacher les modèles, les couleurs et les tailles comme vous le souhaitez pour atteindre ce minimum. C'est idéal pour tester notre qualité sans gros risque."
+    },
+    {
+      icon: CreditCard,
+      question: "Pourquoi 13,50€ alors que je trouve des mules à 8€ ailleurs ?",
+      answer: "La différence est radicale : à 8€, vous achetez souvent du carton pâte et du simili bas de gamme qui craque en 2 semaines. Nos mules sont en cuir vegan premium, avec semelle ergonomique et finitions cousues main. Vos clientes reviendront pour la qualité et le confort durable, pas pour le prix le plus bas."
     },
     {
       icon: Clock,
       question: "Quels sont les délais de livraison ?",
-      answer: "Livraison express en 4 à 7 jours ouvrés partout en Europe depuis notre atelier de Fès. Les délais peuvent varier légèrement selon les quantités commandées. Pour les commandes urgentes, contactez-nous pour une solution sur-mesure."
+      answer: "Comptez 14 jours ouvrés pour la fabrication et la livraison. C'est le temps nécessaire pour garantir une qualité artisanale irréprochable sur chaque paire. Nous ne stockons pas, nous fabriquons à la demande pour vous."
     },
     {
       icon: Shield,
-      question: "Puis-je commander un échantillon avant de passer commande ?",
-      answer: "Absolument ! Nous proposons des échantillons physiques à prix coûtant (frais de port inclus). Cela vous permet de vérifier la qualité exceptionnelle de nos finitions cousues et de nos matériaux premium avant de vous engager. Contactez-nous pour commander vos échantillons."
-    },
-    {
-      icon: CreditCard,
-      question: "Quels sont les modes de paiement acceptés ?",
-      answer: "Nous acceptons les virements bancaires SEPA (privilégié pour les professionnels), PayPal Business, et les paiements par carte bancaire. Pour les partenaires réguliers, nous proposons des conditions de paiement à 30 jours sur facture après validation de votre dossier."
+      question: "Puis-je commander un échantillon ?",
+      answer: "Oui, nous encourageons vivement la commande d'échantillons pour valider la qualité. Contactez-nous sur WhatsApp pour recevoir votre paire de test."
     },
     {
       icon: Truck,
-      question: "Y a-t-il des frais de douane ou taxes supplémentaires ?",
-      answer: "Pour les livraisons en France et UE, tous nos prix sont TTC et incluent la TVA. Pas de mauvaise surprise ! Les frais de port sont calculés en fonction du poids et de la destination. Pour la Suisse et autres pays hors UE, des frais de douane peuvent s'appliquer selon la législation locale."
+      question: "Livrez-vous partout en Europe ?",
+      answer: "Oui, nous livrons en France, Belgique, Suisse, Espagne et dans toute l'Europe. Les frais de port sont calculés au plus juste selon le poids de votre commande."
     },
     {
       icon: RefreshCw,
-      question: "Comment fonctionne le SAV et les retours ?",
-      answer: "Nous garantissons la qualité de nos produits. En cas de défaut de fabrication, nous procédons à un échange ou remboursement sous 14 jours. Les retours pour convenance personnelle sont acceptés si les produits sont dans leur état d'origine avec étiquettes. Notre équipe SAV est réactive et à votre écoute pour tout problème."
+      question: "Comment se passe le réassort ?",
+      answer: "Le réassort est très simple et rapide. Une fois client, vous pouvez recommander par petites quantités (min 30 paires) pour compléter vos stocks sur les couleurs qui marchent le mieux."
     }
   ];
 

@@ -24,7 +24,7 @@ const Heritage = () => {
         style={{ y, opacity }}
         className="absolute top-1/4 right-0 w-96 h-96 bg-champagne/5 rounded-full blur-3xl pointer-events-none"
       />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={ref} className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
           {/* Image - En premier sur mobile */}
@@ -85,20 +85,39 @@ const Heritage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="space-y-3 md:space-y-4 text-charcoal/80 text-sm md:text-base lg:text-lg leading-relaxed"
+              className="space-y-6 text-charcoal/80 text-sm md:text-base leading-relaxed"
             >
               <p>
-                Depuis la médina historique de Fès, capitale mondiale de la chaussure,
-                nous perpétuons un savoir-faire artisanal d'exception. Nos ateliers créatifs
-                conjuguent tradition ancestrale et innovation moderne pour créer des mules
-                et mocassins authentiques en cuir vegan de très haute qualité aux finitions cousues.
+                Notre atelier familial perpétue un savoir-faire artisanal transmis sur plusieurs générations.
+                Nous avons fait le choix audacieux d'allier cette tradition à des matériaux modernes et éthiques.
               </p>
 
-              <p>
-                Chaque pièce est méticuleusement confectionnée par nos artisans marocains, garantissant
-                une résistance et une durabilité remarquables. Fournisseur spécialisé B2B, nous vous proposons
-                des chaussures artisanales conçues pour séduire vos clients les plus exigeants.
-              </p>
+              <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
+                <h4 className="font-bold text-gray-900 mb-2">Notre engagement qualité :</h4>
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-500 font-bold">✓</span>
+                    <span>Sélection rigoureuse des matériaux vegans premium</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-500 font-bold">✓</span>
+                    <span>Fabrication artisanale avec finitions cousues main</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-500 font-bold">✓</span>
+                    <span>Conception orientée confort (semelles ergonomiques)</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-bold text-gray-900 mb-2">Pourquoi nos mules sont différentes :</h4>
+                <p>
+                  Contrairement aux productions industrielles, nous créons des chaussures artisanales pensées pour séduire votre clientèle et vous garantir des marges confortables.
+                  <br />
+                  <span className="font-bold text-gray-900">Confort réel • 12 couleurs • Fabrication maîtrisée • Matériaux durables</span>
+                </p>
+              </div>
             </motion.div>
 
             {/* Decorative Border */}

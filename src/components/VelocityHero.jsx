@@ -119,21 +119,36 @@ const VelocityHero = () => {
 
                 {/* Hero Content */}
                 <div ref={textRef} className="hero-content flex-1 max-w-[600px] text-center lg:text-left z-30 mx-auto lg:mx-0 relative">
-                    <h1 className="text-[3rem] md:text-[5rem] font-light text-[#2c2c2c] mb-8 leading-tight">
-                        L'EXCELLENCE DE<br />
-                        <span className="text-[#c9a86a] italic font-serif">L'ARTISANAT MAROCAIN</span>
+                    <h1 className="text-[3rem] md:text-[4.5rem] font-light text-[#2c2c2c] mb-6 leading-tight uppercase">
+                        FOURNISSEUR B2B DE<br />
+                        <span className="text-[#c9a86a] italic font-serif">MULES ARTISANALES</span>
                     </h1>
-                    <p className="text-xl md:text-2xl text-[#2c2c2c] mb-6 font-medium">
-                        Fournisseur B2B de mules et sabots en cuir véritable.
+
+                    <div className="flex flex-wrap gap-3 justify-center lg:justify-start mb-6">
+                        <span className="bg-[#2c2c2c] text-white px-3 py-1 text-sm font-bold uppercase tracking-wider">Livraison 14 jours</span>
+                        <span className="bg-[#c9a86a] text-white px-3 py-1 text-sm font-bold uppercase tracking-wider">MOQ 100 paires</span>
+                        <span className="bg-white border border-[#2c2c2c] text-[#2c2c2c] px-3 py-1 text-sm font-bold uppercase tracking-wider">Jusqu'à 12 couleurs</span>
+                    </div>
+
+                    <p className="text-xl md:text-2xl text-[#2c2c2c] mb-4 font-medium">
+                        Mules et sabots artisanaux en cuir vegan premium.
                     </p>
-                    <p className="text-lg text-[#2c2c2c]/80 font-light">
-                        Alliant tradition séculaire et design contemporain.
+                    <p className="text-lg text-[#2c2c2c]/80 font-light mb-8">
+                        Confort exceptionnel • Fabrication marocaine • Marges confortables
                     </p>
+
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="#calculateur" className="bg-[#c9a86a] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#b08d55] transition-colors shadow-lg">
+                            Calculer ma marge
+                        </a>
+                        <a href="#collections" className="bg-white text-[#2c2c2c] border-2 border-[#2c2c2c] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-50 transition-colors">
+                            Voir les couleurs
+                        </a>
+                    </div>
                 </div>
 
                 {/* Hero Image */}
-                <div
-                    className="hero-image flex-1 flex justify-center items-center relative z-20 mt-12 lg:mt-0"
+                <div className="hero-image flex-1 flex justify-center items-center relative z-20 mt-12 lg:mt-0"
                     style={{ background: 'none !important' }}
                 >
                     <div className="relative w-full flex justify-center">

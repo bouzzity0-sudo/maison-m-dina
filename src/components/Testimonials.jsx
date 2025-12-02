@@ -38,6 +38,26 @@ const Testimonials = () => {
       color: "#C67C4E",
       date: "Il y a 3 semaines",
       verified: true
+    },
+    {
+      id: 4,
+      name: "Julie",
+      company: "Boutique Bohème - Nice",
+      text: "Mes clientes adorent le choix des couleurs ! Le vert sauge et le terracotta sont partis en 3 jours. C'est rare de trouver autant de nuances chez un grossiste. Le réassort est super simple.",
+      initials: "J",
+      color: "#7A7A52",
+      date: "Il y a 1 semaine",
+      verified: true
+    },
+    {
+      id: 5,
+      name: "Marie",
+      company: "Concept Store - Paris",
+      text: "Les modèles plateformes sont une tuerie. Ça change des mules classiques, ça fait très créateur et 'premium'. J'ai une marge excellente dessus et ça attire l'œil en vitrine.",
+      initials: "M",
+      color: "#E67E50",
+      date: "Il y a 2 jours",
+      verified: true
     }
   ];
 

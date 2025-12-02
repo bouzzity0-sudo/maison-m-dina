@@ -1,33 +1,41 @@
+import { lazy, Suspense } from 'react';
 import SkipLink from './components/SkipLink';
 import Navbar from './components/Navbar';
 import TopBanner from './components/TopBanner';
 import AnimatedHero from './components/AnimatedHero';
-
-import ComparisonBanner from './components/ComparisonBanner';
-import ColorsSection from './components/ColorsSection';
-import ComfortSection from './components/ComfortSection';
-import PlatformsSection from './components/PlatformsSection';
-import Bestsellers from './components/Bestsellers';
-import Collections from './components/Collections';
-import InstagramGallery from './components/InstagramGallery';
-import TrustBadges from './components/TrustBadges';
-import WhyChoose from './components/WhyChoose';
-import Heritage from './components/Heritage';
-import SocialProof from './components/SocialProof';
-import Testimonials from './components/Testimonials';
-import KeyStats from './components/KeyStats';
-import HowItWorks from './components/HowItWorks';
-import QuoteCalculator from './components/QuoteCalculator';
-import Pricing from './components/Pricing';
-import FAQ from './components/FAQ';
-import ContactForm from './components/ContactForm';
-import CTA from './components/CTA';
-import Footer from './components/Footer';
-import WhatsAppButton from './components/WhatsAppButton';
-import EmailButton from './components/EmailButton';
-import ScrollToTop from './components/ScrollToTop';
-import StickyCTA from './components/StickyCTA';
 import VelocityHero from './components/VelocityHero';
+
+// Lazy load below-the-fold components
+const ComparisonBanner = lazy(() => import('./components/ComparisonBanner'));
+const ColorsSection = lazy(() => import('./components/ColorsSection'));
+const ComfortSection = lazy(() => import('./components/ComfortSection'));
+const PlatformsSection = lazy(() => import('./components/PlatformsSection'));
+const Bestsellers = lazy(() => import('./components/Bestsellers'));
+const Collections = lazy(() => import('./components/Collections'));
+const InstagramGallery = lazy(() => import('./components/InstagramGallery'));
+const TrustBadges = lazy(() => import('./components/TrustBadges'));
+const WhyChoose = lazy(() => import('./components/WhyChoose'));
+const Heritage = lazy(() => import('./components/Heritage'));
+const SocialProof = lazy(() => import('./components/SocialProof'));
+const Testimonials = lazy(() => import('./components/Testimonials'));
+const KeyStats = lazy(() => import('./components/KeyStats'));
+const HowItWorks = lazy(() => import('./components/HowItWorks'));
+const QuoteCalculator = lazy(() => import('./components/QuoteCalculator'));
+const Pricing = lazy(() => import('./components/Pricing'));
+const FAQ = lazy(() => import('./components/FAQ'));
+const ContactForm = lazy(() => import('./components/ContactForm'));
+const CTA = lazy(() => import('./components/CTA'));
+const Footer = lazy(() => import('./components/Footer'));
+const WhatsAppButton = lazy(() => import('./components/WhatsAppButton'));
+const EmailButton = lazy(() => import('./components/EmailButton'));
+const ScrollToTop = lazy(() => import('./components/ScrollToTop'));
+const StickyCTA = lazy(() => import('./components/StickyCTA'));
+
+const SectionLoader = () => (
+  <div className="py-20 flex items-center justify-center">
+    <div className="w-12 h-12 border-4 border-champagne/30 border-t-champagne rounded-full animate-spin" />
+  </div>
+);
 
 import CustomCursor from './components/ui/CustomCursor';
 
@@ -47,50 +55,54 @@ function App() {
           <VelocityHero />
         </section>
 
-        <ComparisonBanner />
-        <ColorsSection />
-        <ComfortSection />
-        <PlatformsSection />
-        <Bestsellers />
+        <Suspense fallback={<SectionLoader />}>
+          <ComparisonBanner />
+          <ColorsSection />
+          <ComfortSection />
+          <PlatformsSection />
+          <Bestsellers />
 
-        <section id="collections">
-          <Collections />
-        </section>
+          <section id="collections">
+            <Collections />
+          </section>
 
-        <QuoteCalculator />
-        <InstagramGallery />
-        <TrustBadges />
+          <QuoteCalculator />
+          <InstagramGallery />
+          <TrustBadges />
 
-        <section id="avantages">
-          <WhyChoose />
-        </section>
+          <section id="avantages">
+            <WhyChoose />
+          </section>
 
-        <section id="savoir-faire">
-          <Heritage />
-        </section>
+          <section id="savoir-faire">
+            <Heritage />
+          </section>
 
-        <SocialProof />
-        <Testimonials />
-        <KeyStats />
-        <HowItWorks />
+          <SocialProof />
+          <Testimonials />
+          <KeyStats />
+          <HowItWorks />
 
-        <section id="tarifs">
-          <Pricing />
-        </section>
+          <section id="tarifs">
+            <Pricing />
+          </section>
 
-        <FAQ />
+          <FAQ />
 
-        <section id="contact">
-          <ContactForm />
-        </section>
+          <section id="contact">
+            <ContactForm />
+          </section>
 
-        <CTA />
+          <CTA />
+        </Suspense>
       </main>
-      <Footer />
-      <WhatsAppButton />
-      <EmailButton />
-      <ScrollToTop />
-      <StickyCTA />
+      <Suspense fallback={null}>
+        <Footer />
+        <WhatsAppButton />
+        <EmailButton />
+        <ScrollToTop />
+        <StickyCTA />
+      </Suspense>
     </div>
   );
 }

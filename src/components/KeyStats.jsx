@@ -120,8 +120,8 @@ const KeyStats = () => {
       subtitle: 'Partenaires en Europe',
     },
     {
-      value: '6',
-      unit: ',2j livraison',
+      value: '14',
+      unit: ' jours livraison',
       subtitle: 'Commande à réception',
     },
     {

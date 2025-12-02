@@ -53,7 +53,7 @@ const TrustBadges = () => {
     {
       icon: RotateCcw,
       title: 'Stock Permanent',
-      description: 'Réassort garanti sous 4-7 jours',
+      description: 'Réassort garanti sous 14 jours',
     },
     {
       icon: CreditCard,
