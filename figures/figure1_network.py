@@ -1,8 +1,8 @@
 """
-Figure 1 — Graphe de rivalités acteurs cyber-nucléaire — ITERATION 2
-Corrections : labels externes aux nœuds avec offsets manuels,
-suppression adjustText (nœuds déjà non-superposés), nœuds plus grands,
-halo de lisibilité, flèches arrondies pour arêtes réciproques.
+Figure 1 — Graphe de rivalités acteurs cyber-nucléaire — ITERATION 3
+Corrections : suppression grille, écartement clusters offensif/défensif,
+EDF agrandi + couleur plus visible, séparation KillNet/TEMP.Veles,
+AIEA annotation contextuelle, CISA/ANSSI désolidarisés verticalement.
 """
 import numpy as np
 import matplotlib
@@ -22,7 +22,7 @@ COLORS = {
     'ambivalent': '#5B2C8D',
     'défenseur':  '#1B5E20',
     'normatif':   '#1A237E',
-    'opérateur':  '#37474F',
+    'opérateur':  '#546E7A',   # gris-bleu plus visible que #37474F
 }
 
 EDGE_STYLES = {
@@ -50,7 +50,7 @@ NODES = [
     ('CISA',      'CISA / NSA défensif',   'défenseur',   9),
     ('FiveEyes',  'Five Eyes',             'défenseur',   9),
     ('AIEA',      'AIEA',                  'normatif',    7),
-    ('EDF_op',    'EDF / Framatome / Orano','opérateur',  6),
+    ('EDF_op',    'EDF / Framatome / Orano','opérateur',  8),  # ×1.5 intensité visuelle
 ]
 NODE_IDS    = [n[0] for n in NODES]
 LABELS      = {n[0]: n[1] for n in NODES}
@@ -59,43 +59,45 @@ INTENSITIES = {n[0]: n[3] for n in NODES}
 NODE_SIZES  = {nid: 400 + INTENSITIES[nid]**2 * 28 for nid in NODE_IDS}
 
 # ─── POSITIONS ───
+# Itération 3 : cluster offensif écarté (≥0.8 Y entre chaque),
+# CISA/ANSSI séparés verticalement, KillNet/TEMP_V distanciés
 POS = {
-    'FSB_C16':   (-4.2,  2.2),
-    'GRU_SW':    (-4.2,  0.6),
-    'Lazarus':   (-3.6, -0.8),
-    'APT33':     (-3.4, -2.2),
-    'MSS_APT10': (-4.0, -3.6),
-    'KillNet':   (-2.0,  3.0),
-    'TEMP_V':    (-2.0,  1.2),
-    'NSA_CIA':   ( 0.2,  3.6),
-    'Unit8200':  ( 1.8,  2.8),
-    'GCHQ':      ( 3.4,  2.4),
-    'DGSE_LIO':  ( 1.2,  1.4),
-    'ANSSI':     ( 2.2, -0.4),
-    'CISA':      ( 3.8, -0.4),
-    'FiveEyes':  ( 4.0,  1.2),
-    'AIEA':      ( 0.4, -2.0),
-    'EDF_op':    ( 0.0, -4.2),
+    'FSB_C16':   (-4.2,  3.0),   # monté pour écarter du cluster
+    'GRU_SW':    (-4.2,  1.6),   # +1.0 vs FSB
+    'Lazarus':   (-3.6,  0.2),   # +1.4 vs GRU
+    'APT33':     (-3.4, -1.4),   # +1.6 vs Lazarus
+    'MSS_APT10': (-4.0, -3.0),   # +1.6 vs APT33
+    'KillNet':   (-1.6,  3.8),   # déplacé à gauche pour éviter collision
+    'TEMP_V':    (-2.4,  2.4),   # séparé de KillNet
+    'NSA_CIA':   ( 0.0,  3.8),
+    'Unit8200':  ( 1.6,  2.8),
+    'GCHQ':      ( 3.2,  3.0),
+    'DGSE_LIO':  ( 1.0,  1.6),
+    'ANSSI':     ( 2.0, -0.8),   # séparé de CISA
+    'CISA':      ( 3.6,  0.4),   # remonté par rapport à ANSSI
+    'FiveEyes':  ( 4.2,  1.8),
+    'AIEA':      ( 0.2, -2.4),
+    'EDF_op':    ( 0.0, -4.4),
 }
 
-# Offset des labels par rapport au centre du nœud (dx, dy en unités data)
+# Offset des labels (dx, dy). Itération 3 : offsets latéraux pour les clusters denses
 LABEL_OFFSET = {
-    'FSB_C16':   (-0.10,  0.60),
-    'GRU_SW':    (-0.10,  0.62),
-    'Lazarus':   (-0.55,  0.58),
-    'APT33':     (-0.10,  0.58),
-    'MSS_APT10': (-0.10,  0.72),
-    'KillNet':   ( 0.00,  0.58),
-    'TEMP_V':    ( 0.00,  0.70),
-    'NSA_CIA':   ( 0.00,  0.62),
-    'Unit8200':  ( 0.00,  0.60),
-    'GCHQ':      ( 0.00,  0.60),
-    'DGSE_LIO':  ( 0.00,  0.60),
-    'ANSSI':     ( 0.00,  0.60),
-    'CISA':      ( 0.00,  0.60),
-    'FiveEyes':  ( 0.00,  0.62),
-    'AIEA':      ( 0.00,  0.60),
-    'EDF_op':    ( 0.00,  0.60),
+    'FSB_C16':   (-0.90,  0.00),  # à gauche du nœud
+    'GRU_SW':    (-0.90,  0.00),  # à gauche
+    'Lazarus':   (-0.90,  0.00),  # à gauche
+    'APT33':     (-0.90,  0.00),  # à gauche
+    'MSS_APT10': (-0.90,  0.00),  # à gauche
+    'KillNet':   ( 0.00,  0.65),  # au-dessus
+    'TEMP_V':    (-0.90,  0.00),  # à gauche
+    'NSA_CIA':   ( 0.00,  0.65),  # au-dessus
+    'Unit8200':  ( 0.00,  0.65),  # au-dessus
+    'GCHQ':      ( 0.90,  0.00),  # à droite
+    'DGSE_LIO':  ( 0.00,  0.65),  # au-dessus
+    'ANSSI':     ( 0.90,  0.00),  # à droite
+    'CISA':      ( 0.90,  0.00),  # à droite
+    'FiveEyes':  ( 0.90,  0.00),  # à droite
+    'AIEA':      ( 0.00,  0.65),  # au-dessus
+    'EDF_op':    ( 0.00,  0.72),  # au-dessus (grand nœud)
 }
 
 # ─── ARÊTES ───
@@ -134,11 +136,10 @@ fig, ax = plt.subplots(figsize=(22, 17))
 fig.patch.set_facecolor(BG_COLOR)
 ax.set_facecolor(BG_COLOR)
 
-# Grille légère
-for x in np.arange(-5, 5.5, 1.0):
-    ax.axvline(x, color='#E5E2D8', lw=0.4, zorder=0, alpha=0.5)
-for y in np.arange(-5, 5.5, 1.0):
-    ax.axhline(y, color='#E5E2D8', lw=0.4, zorder=0, alpha=0.5)
+# Zones de fond sémantiques (pas de grille cartésienne)
+ax.axvspan(-5.6, -1.0, color='#FDECEA', alpha=0.18, zorder=0)  # zone offensive
+ax.axvspan(-1.0,  1.0, color='#F5F0FF', alpha=0.12, zorder=0)  # zone ambivalente
+ax.axvspan( 1.0,  5.6, color='#E8F5E9', alpha=0.18, zorder=0)  # zone défensive
 
 # ─── ARÊTES ───
 for (src, dst, etype) in EDGES:
@@ -182,9 +183,18 @@ for nid in NODE_IDS:
     clr = COLORS[CATEGORIES[nid]]
     lbl = LABELS[nid]
 
+    # ha dépend de la direction du label
+    ha_map = {
+        'FSB_C16':'right','GRU_SW':'right','Lazarus':'right','APT33':'right','MSS_APT10':'right',
+        'TEMP_V':'right',
+        'GCHQ':'left','ANSSI':'left','CISA':'left','FiveEyes':'left',
+    }
+    ha = ha_map.get(nid, 'center')
+    va = 'center' if ha in ('left','right') else 'bottom'
+
     ax.text(
         lx, ly, lbl,
-        ha='center', va='bottom',
+        ha=ha, va=va,
         fontsize=8.2, fontfamily=FONT, fontweight='bold',
         color='white',
         multialignment='center',
@@ -283,9 +293,18 @@ fig.text(
     ha='center', fontsize=7.2, fontfamily=FONT, style='italic', color='#555544',
 )
 
+# Annotation contextuelle AIEA
+ax.annotate(
+    'Normes\nnon contraignantes\n(INFCIRC/225)',
+    xy=(0.2, -2.4), xytext=(1.4, -3.2),
+    fontsize=7, fontfamily=FONT, style='italic', color='#1A237E',
+    arrowprops=dict(arrowstyle='-', color='#1A237E', lw=0.8, alpha=0.6),
+    zorder=9,
+)
+
 ax.axis('off')
-ax.set_xlim(-5.6, 5.6)
-ax.set_ylim(-5.4, 4.8)
+ax.set_xlim(-5.8, 5.8)
+ax.set_ylim(-5.6, 5.2)
 plt.tight_layout(rect=[0, 0.04, 1, 0.94])
 
 fig.savefig('/home/user/maison-m-dina/figures/figure1_network.png',
