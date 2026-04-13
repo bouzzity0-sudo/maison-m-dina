@@ -46,3 +46,7 @@ Thumbs.db
 
 # Netlify
 .netlify/
+
+# Figures générées (non versionnées)
+figures/*.png
+figures/*.svg
