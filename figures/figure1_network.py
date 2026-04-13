@@ -1,8 +1,19 @@
 """
-Figure 1 — Graphe de rivalités acteurs cyber-nucléaire — ITERATION 3
-Corrections : suppression grille, écartement clusters offensif/défensif,
-EDF agrandi + couleur plus visible, séparation KillNet/TEMP.Veles,
-AIEA annotation contextuelle, CISA/ANSSI désolidarisés verticalement.
+Figure 1 — Graphe cyber-nucléaire — ITERATION 4 (correction complète)
+
+Corrections appliquées :
+- FSB Centre 16 → Centre 18 (Unit 71330, DOJ 2022)
+- APT10 et Volt Typhoon séparés (deux acteurs distincts)
+- Lazarus et Kimsuky séparés (deux acteurs DPRK distincts)
+- GCHQ reclassifié défenseur (aucune op offensive nucleaire documentée)
+- TRITON→EDF supprimé (TRITON = Arabie Saoudite, pas France)
+- NITRO ZEUS recadré (plan contre Iran, arête NSA→EDF supprimée)
+- Ajout COMCYBER + DGA-MI (piliers LIO France)
+- LIO = interministériel (pas exclusivement DGSE)
+- EDF / Framatome / Orano nœuds distincts
+- Système de confiance sur les arêtes (3 niveaux)
+- Fonds de clusters nationaux (Russie, Chine, DPRK, Iran)
+- KillNet = "contractor étatique" (nuance 2023)
 """
 import numpy as np
 import matplotlib
@@ -12,304 +23,327 @@ import matplotlib.patches as mpatches
 import matplotlib.lines as mlines
 import matplotlib.patheffects as pe
 import networkx as nx
+from matplotlib.patches import Ellipse
 
-BG_COLOR   = '#F9F6EF'
-FONT       = 'P052'
+BG_COLOR = '#F9F6EF'
+FONT     = 'P052'
 
+# ─── PALETTE ───
 COLORS = {
-    'offensif':   '#8B0000',
-    'proxy':      '#C4600A',
-    'ambivalent': '#5B2C8D',
-    'défenseur':  '#1B5E20',
-    'normatif':   '#1A237E',
-    'opérateur':  '#546E7A',   # gris-bleu plus visible que #37474F
+    'offensif':    '#8B0000',
+    'proxy':       '#BF5700',
+    'ambivalent':  '#5B2C8D',
+    'défenseur':   '#1B5E20',
+    'normatif':    '#1A237E',
+    'opérateur':   '#546E7A',
 }
 
-EDGE_STYLES = {
-    'offensive': dict(color='#C62828', ls='-',  lw=2.2, alpha=0.88),
-    'proxy':     dict(color='#E65100', ls='--', lw=1.7, alpha=0.82),
-    'défensive': dict(color='#2E7D32', ls='-',  lw=2.0, alpha=0.82),
-    'tension':   dict(color='#607D8B', ls=':',  lw=1.5, alpha=0.78),
+NATION_BG = {
+    'russia': ('#FDECEA', '#C62828', 'Russie'),
+    'china':  ('#FFF8E1', '#F57F17', 'Chine'),
+    'dprk':   ('#FCE4EC', '#880E4F', 'RPDC'),
+    'iran':   ('#FFF3E0', '#E65100', 'Iran'),
+}
+
+# ─── NIVEAUX DE CONFIANCE DES ARÊTES ───
+# HIGH : source primaire judiciaire / gouvernementale
+# MED  : rapports TI multiple, attribution probable
+# LOW  : capacité démontrée / inféré / non confirmé FR
+CONF_STYLE = {
+    'offensive-HIGH': dict(color='#C62828', ls='-',  lw=2.6, alpha=0.90),
+    'offensive-MED':  dict(color='#C62828', ls='--', lw=1.8, alpha=0.78),
+    'offensive-LOW':  dict(color='#E57373', ls=':',  lw=1.3, alpha=0.65),
+    'proxy-HIGH':     dict(color='#E65100', ls='-',  lw=2.0, alpha=0.88),
+    'proxy-MED':      dict(color='#E65100', ls='--', lw=1.5, alpha=0.75),
+    'défensive-HIGH': dict(color='#2E7D32', ls='-',  lw=2.2, alpha=0.88),
+    'défensive-MED':  dict(color='#2E7D32', ls='--', lw=1.6, alpha=0.75),
+    'tension-MED':    dict(color='#607D8B', ls=':',  lw=1.4, alpha=0.72),
 }
 
 # ─── NŒUDS ───
-# (id, label, catégorie, intensité)
 NODES = [
-    ('FSB_C16',   'FSB Centre 16',         'offensif',   9),
-    ('GRU_SW',    'GRU Sandworm',           'offensif',   9),
-    ('Lazarus',   'Lazarus / Kimsuky',      'offensif',   8),
-    ('APT33',     'APT33 (Iran)',           'offensif',   7),
-    ('MSS_APT10', 'MSS APT10 /\nVolt Typhoon', 'offensif', 8),
-    ('KillNet',   'KillNet',               'proxy',      5),
-    ('TEMP_V',    'TEMP.Veles\n(XENOTIME)', 'proxy',      7),
-    ('NSA_CIA',   'NSA / CIA',             'ambivalent', 10),
-    ('Unit8200',  'Unit 8200 (Israël)',     'ambivalent',  8),
-    ('GCHQ',      'GCHQ (UK)',             'ambivalent',  7),
-    ('DGSE_LIO',  'DGSE / LIO (France)',   'ambivalent',  6),
-    ('ANSSI',     'ANSSI / CERT-FR',       'défenseur',   8),
-    ('CISA',      'CISA / NSA défensif',   'défenseur',   9),
-    ('FiveEyes',  'Five Eyes',             'défenseur',   9),
-    ('AIEA',      'AIEA',                  'normatif',    7),
-    ('EDF_op',    'EDF / Framatome / Orano','opérateur',  8),  # ×1.5 intensité visuelle
+    # Russie — état
+    ('FSB_C18',     'FSB Centre 18\n(Unit 71330)',      'offensif',   9),
+    ('GRU_SW',      'GRU Sandworm\n(Unit 74455)',       'offensif',   9),
+    # Russie — proxy/contractor
+    ('KillNet',     'KillNet\n(contractor étatique)',   'proxy',      6),
+    ('TEMP_V',      'TEMP.Veles\n(CNIIHM)',             'proxy',      8),
+    # Chine — deux acteurs distincts
+    ('APT10',       'APT10\n(Stone Panda / MSS)',       'offensif',   7),
+    ('VoltT',       'Volt Typhoon\n(Bronze Silhouette)','offensif',   8),
+    # RPDC — deux acteurs distincts
+    ('Lazarus',     'Lazarus Group\n(RGB / Bureau 121)','offensif',   8),
+    ('Kimsuky',     'Kimsuky\n(RGB / Unité 180)',       'offensif',   7),
+    # Iran
+    ('APT33',       'APT33\n(IRGC-MOIS)',              'offensif',   7),
+    # Ambivalents
+    ('NSA_CIA',     'NSA / CIA\n(USA)',                 'ambivalent', 10),
+    ('Unit8200',    'Unit 8200\n(AMAN, Israël)',        'ambivalent',  8),
+    ('DGSE_LIO',    'DGSE\n(LIO France)',               'ambivalent',  7),
+    # Défenseurs
+    ('ANSSI',       'ANSSI /\nCERT-FR',                'défenseur',   8),
+    ('COMCYBER',    'COMCYBER\n(France)',               'défenseur',   8),
+    ('DGA_MI',      'DGA-MI\n(Rennes)',                'défenseur',   6),
+    ('CISA',        'CISA / FBI\n(USA)',                'défenseur',   9),
+    ('GCHQ',        'GCHQ\n(UK)',                      'défenseur',   7),
+    ('FiveEyes',    'Five Eyes',                       'défenseur',   9),
+    # Normatif
+    ('AIEA',        'AIEA',                            'normatif',    7),
+    # Opérateurs FR — nœuds distincts
+    ('EDF',         'EDF\n(exploitation)',             'opérateur',   7),
+    ('Framatome',   'Framatome\n(équipements)',        'opérateur',   6),
+    ('Orano',       'Orano\n(cycle combustible)',      'opérateur',   6),
+    # Cible auxiliaire (pour recadrer TRITON géographiquement)
+    ('SIS_SA',      'SIS industriels\n(cible Arabie\nSaoudite)',  'opérateur', 5),
 ]
+
 NODE_IDS    = [n[0] for n in NODES]
 LABELS      = {n[0]: n[1] for n in NODES}
 CATEGORIES  = {n[0]: n[2] for n in NODES}
 INTENSITIES = {n[0]: n[3] for n in NODES}
-NODE_SIZES  = {nid: 400 + INTENSITIES[nid]**2 * 28 for nid in NODE_IDS}
+NODE_SIZES  = {nid: 320 + INTENSITIES[nid]**2 * 26 for nid in NODE_IDS}
 
 # ─── POSITIONS ───
-# Itération 3 : cluster offensif écarté (≥0.8 Y entre chaque),
-# CISA/ANSSI séparés verticalement, KillNet/TEMP_V distanciés
 POS = {
-    'FSB_C16':   (-4.2,  3.0),   # monté pour écarter du cluster
-    'GRU_SW':    (-4.2,  1.6),   # +1.0 vs FSB
-    'Lazarus':   (-3.6,  0.2),   # +1.4 vs GRU
-    'APT33':     (-3.4, -1.4),   # +1.6 vs Lazarus
-    'MSS_APT10': (-4.0, -3.0),   # +1.6 vs APT33
-    'KillNet':   (-1.6,  3.8),   # déplacé à gauche pour éviter collision
-    'TEMP_V':    (-2.4,  2.4),   # séparé de KillNet
-    'NSA_CIA':   ( 0.0,  3.8),
-    'Unit8200':  ( 1.6,  2.8),
-    'GCHQ':      ( 3.2,  3.0),
-    'DGSE_LIO':  ( 1.0,  1.6),
-    'ANSSI':     ( 2.0, -0.8),   # séparé de CISA
-    'CISA':      ( 3.6,  0.4),   # remonté par rapport à ANSSI
-    'FiveEyes':  ( 4.2,  1.8),
-    'AIEA':      ( 0.2, -2.4),
-    'EDF_op':    ( 0.0, -4.4),
+    # Russie cluster (haut-gauche)
+    'FSB_C18':   (-5.4,  3.0),
+    'GRU_SW':    (-5.4,  1.6),
+    'KillNet':   (-3.6,  4.0),
+    'TEMP_V':    (-3.6,  2.6),
+    # Chine cluster (gauche-milieu)
+    'APT10':     (-5.2,  0.0),
+    'VoltT':     (-5.2, -1.4),
+    # RPDC cluster (bas-gauche)
+    'Lazarus':   (-4.2, -2.8),
+    'Kimsuky':   (-4.2, -4.0),
+    # Iran (extrême bas-gauche)
+    'APT33':     (-2.8, -5.2),
+    # Ambivalents (haut-centre)
+    'NSA_CIA':   ( 0.0,  4.4),
+    'Unit8200':  ( 1.6,  3.4),
+    'DGSE_LIO':  (-0.6,  3.0),
+    # Défenseurs (droite)
+    'ANSSI':     ( 3.2,  0.8),
+    'COMCYBER':  ( 3.2, -0.6),
+    'DGA_MI':    ( 3.2, -2.0),
+    'CISA':      ( 4.8,  1.8),
+    'GCHQ':      ( 4.8,  3.2),
+    'FiveEyes':  ( 4.8,  4.4),
+    # Normatif
+    'AIEA':      ( 0.4, -1.6),
+    # Opérateurs FR (bas-centre)
+    'EDF':       (-0.2, -4.6),
+    'Framatome': ( 1.2, -4.0),
+    'Orano':     (-1.6, -4.0),
+    # Cible auxiliaire (bas-droite)
+    'SIS_SA':    ( 2.2, -4.8),
 }
 
-# Offset des labels (dx, dy). Itération 3 : offsets latéraux pour les clusters denses
-LABEL_OFFSET = {
-    'FSB_C16':   (-0.90,  0.00),  # à gauche du nœud
-    'GRU_SW':    (-0.90,  0.00),  # à gauche
-    'Lazarus':   (-0.90,  0.00),  # à gauche
-    'APT33':     (-0.90,  0.00),  # à gauche
-    'MSS_APT10': (-0.90,  0.00),  # à gauche
-    'KillNet':   ( 0.00,  0.65),  # au-dessus
-    'TEMP_V':    (-0.90,  0.00),  # à gauche
-    'NSA_CIA':   ( 0.00,  0.65),  # au-dessus
-    'Unit8200':  ( 0.00,  0.65),  # au-dessus
-    'GCHQ':      ( 0.90,  0.00),  # à droite
-    'DGSE_LIO':  ( 0.00,  0.65),  # au-dessus
-    'ANSSI':     ( 0.90,  0.00),  # à droite
-    'CISA':      ( 0.90,  0.00),  # à droite
-    'FiveEyes':  ( 0.90,  0.00),  # à droite
-    'AIEA':      ( 0.00,  0.65),  # au-dessus
-    'EDF_op':    ( 0.00,  0.72),  # au-dessus (grand nœud)
+# ─── OFFSETS LABELS ───
+# Sens de placement : 'L'=gauche, 'R'=droite, 'U'=haut, 'D'=bas
+LABEL_DIR = {
+    'FSB_C18':'L','GRU_SW':'L','KillNet':'L','TEMP_V':'L',
+    'APT10':'L','VoltT':'L',
+    'Lazarus':'L','Kimsuky':'L',
+    'APT33':'L',
+    'NSA_CIA':'U','Unit8200':'U','DGSE_LIO':'U',
+    'ANSSI':'R','COMCYBER':'R','DGA_MI':'R',
+    'CISA':'R','GCHQ':'R','FiveEyes':'R',
+    'AIEA':'U',
+    'EDF':'D','Framatome':'D','Orano':'D',
+    'SIS_SA':'D',
 }
+OFFSETS_MAP = {'L':(-1.1, 0.0),'R':(1.1, 0.0),'U':(0.0, 0.68),'D':(0.0, -0.68)}
+HA_MAP = {'L':'right','R':'left','U':'center','D':'center'}
+VA_MAP = {'L':'center','R':'center','U':'bottom','D':'top'}
 
 # ─── ARÊTES ───
+# (src, dst, type_base, niveau_confiance, note_label)
 EDGES = [
-    ('FSB_C16',  'EDF_op',   'offensive'),
-    ('GRU_SW',   'EDF_op',   'offensive'),
-    ('TEMP_V',   'EDF_op',   'offensive'),
-    ('MSS_APT10','EDF_op',   'offensive'),
-    ('APT33',    'EDF_op',   'offensive'),
-    ('Lazarus',  'EDF_op',   'offensive'),
-    ('KillNet',  'EDF_op',   'proxy'),
-    ('KillNet',  'FSB_C16',  'proxy'),
-    ('TEMP_V',   'GRU_SW',   'proxy'),
-    ('NSA_CIA',  'Unit8200', 'offensive'),
-    ('NSA_CIA',  'EDF_op',   'tension'),
-    ('CISA',     'EDF_op',   'défensive'),
-    ('ANSSI',    'EDF_op',   'défensive'),
-    ('FiveEyes', 'CISA',     'défensive'),
-    ('FiveEyes', 'GCHQ',     'défensive'),
-    ('AIEA',     'EDF_op',   'tension'),
-    ('AIEA',     'ANSSI',    'défensive'),
-    ('APT33',    'MSS_APT10','tension'),
-    ('DGSE_LIO', 'ANSSI',    'défensive'),
-    ('NSA_CIA',  'CISA',     'défensive'),
+    # Offensif → opérateurs FR
+    ('FSB_C18',   'EDF',       'offensive', 'HIGH', 'HAVEX 2014\nWolf Creek 2017\n[DOJ Akulov 2022]'),
+    ('GRU_SW',    'EDF',       'offensive', 'LOW',  'Capacité Industroyer\n[Ukraine; pas FR documenté]'),
+    ('VoltT',     'EDF',       'offensive', 'MED',  'Infra critique OT\n[CISA AA23-144A/AA24-038A]'),
+    ('APT10',     'Framatome', 'offensive', 'MED',  'Espionnage IP\n[NCSC/DoJ 2018]'),
+    ('Lazarus',   'EDF',       'offensive', 'MED',  'Secteur énergie\n[CISA AA22-011A]'),
+    ('Kimsuky',   'Orano',     'offensive', 'MED',  'Espionnage enrichissement\n[HHS/DHS 2020]'),
+    ('APT33',     'EDF',       'offensive', 'MED',  'Secteur énergie\n[CISA AA23-144A]'),
+    # TRITON → cible Arabie Saoudite (corrigé)
+    ('TEMP_V',    'SIS_SA',    'offensive', 'HIGH', 'TRITON/TRISIS 2017\n[Dragos; Arabie Saoudite]'),
+    # Proxy
+    ('KillNet',   'EDF',       'proxy',     'HIGH', 'DDoS pro-russes\n[Mandiant 2022]'),
+    ('KillNet',   'FSB_C18',   'proxy',     'MED',  'Liens Kremlin\n[Mandiant/CERT-EU 2022-23]'),
+    ('TEMP_V',    'GRU_SW',    'proxy',     'MED',  'Attribution GRU/CNIIHM\n[Dragos XENOTIME]'),
+    # Ambivalents — opérations offensives documentées
+    ('NSA_CIA',   'Unit8200',  'offensive', 'HIGH', 'Stuxnet / Natanz\n[Zetter 2014]'),
+    # Ambivalents — coordination défensive
+    ('DGSE_LIO',  'ANSSI',     'défensive', 'MED',  'Coordination SGDSN\n[interministériel]'),
+    ('NSA_CIA',   'CISA',      'défensive', 'HIGH', 'NSA/CISA MOU\n[partage menace]'),
+    # Défenseurs
+    ('CISA',      'EDF',       'défensive', 'HIGH', 'Advisories publics\n[AA22-083A, AA23-144A]'),
+    ('ANSSI',     'EDF',       'défensive', 'HIGH', 'Qualification OIV\n[LPM 2013 art.22]'),
+    ('ANSSI',     'Framatome', 'défensive', 'MED',  'Qualification OIV'),
+    ('ANSSI',     'Orano',     'défensive', 'MED',  'Qualification OIV'),
+    ('COMCYBER',  'ANSSI',     'défensive', 'MED',  'Coordination\ncyber-défense\n[SGDSN 2018]'),
+    ('DGA_MI',    'COMCYBER',  'défensive', 'HIGH', 'R&D LIO / outillage\n[DGA Rennes]'),
+    ('FiveEyes',  'CISA',      'défensive', 'HIGH', 'UKUSA Agreement\n[partage rens.]'),
+    ('FiveEyes',  'GCHQ',      'défensive', 'HIGH', 'UKUSA Agreement'),
+    # Normatif
+    ('AIEA',      'EDF',       'tension',   'MED',  'INFCIRC/225 Rev.5\n[non contraignant]'),
+    ('AIEA',      'ANSSI',     'défensive', 'MED',  'Coopération\nnormative'),
 ]
 
 # ─── GRAPHE ───
 G = nx.DiGraph()
-for nid in NODE_IDS:
-    G.add_node(nid)
-for (src, dst, etype) in EDGES:
-    G.add_edge(src, dst, etype=etype)
+for nid in NODE_IDS: G.add_node(nid)
+for (s, d, t, c, _) in EDGES: G.add_edge(s, d, etype=t, conf=c)
 
 # ─── FIGURE ───
-fig, ax = plt.subplots(figsize=(22, 17))
+fig, ax = plt.subplots(figsize=(28, 20))
 fig.patch.set_facecolor(BG_COLOR)
 ax.set_facecolor(BG_COLOR)
 
-# Zones de fond sémantiques (pas de grille cartésienne)
-ax.axvspan(-5.6, -1.0, color='#FDECEA', alpha=0.18, zorder=0)  # zone offensive
-ax.axvspan(-1.0,  1.0, color='#F5F0FF', alpha=0.12, zorder=0)  # zone ambivalente
-ax.axvspan( 1.0,  5.6, color='#E8F5E9', alpha=0.18, zorder=0)  # zone défensive
+# ─── FONDS NATION CLUSTERS ───
+clusters = {
+    'russia': dict(xy=(-4.6, 2.8), w=4.4, h=3.4, angle=15,
+                   fc='#FDECEA', ec='#C62828', lbl='Russie', lbl_xy=(-6.4, 4.5)),
+    'china':  dict(xy=(-5.2, -0.7), w=2.8, h=2.6, angle=5,
+                   fc='#FFF8E1', ec='#F9A825', lbl='Chine', lbl_xy=(-6.2,  0.8)),
+    'dprk':   dict(xy=(-4.4, -3.4), w=2.8, h=2.4, angle=0,
+                   fc='#FCE4EC', ec='#880E4F', lbl='RPDC',  lbl_xy=(-5.7, -2.1)),
+    'iran':   dict(xy=(-2.8, -5.4), w=2.2, h=1.2, angle=0,
+                   fc='#FFF3E0', ec='#E65100', lbl='Iran',  lbl_xy=(-3.8, -5.0)),
+}
+for key, c in clusters.items():
+    ell = Ellipse(xy=c['xy'], width=c['w'], height=c['h'], angle=c['angle'],
+                  facecolor=c['fc'], edgecolor=c['ec'], alpha=0.55,
+                  linewidth=1.5, linestyle='--', zorder=1)
+    ax.add_patch(ell)
+    ax.text(c['lbl_xy'][0], c['lbl_xy'][1], c['lbl'],
+            fontsize=9, fontfamily=FONT, color=c['ec'],
+            fontweight='bold', style='italic', alpha=0.7, zorder=2)
+
+# Zone fond défenseur
+ax.axvspan(2.0, 6.2, color='#E8F5E9', alpha=0.22, zorder=0)
+ax.axvspan(-1.2, 2.0, color='#F3E5FF', alpha=0.12, zorder=0)  # ambivalent
 
 # ─── ARÊTES ───
-for (src, dst, etype) in EDGES:
-    s = EDGE_STYLES[etype]
-    xS, yS = POS[src]
-    xD, yD = POS[dst]
+edge_labels_drawn = {}
+for (src, dst, btype, conf, note) in EDGES:
+    key = f'{btype}-{conf}'
+    s = CONF_STYLE.get(key, CONF_STYLE.get(f'{btype}-MED',
+        dict(color='#888877', ls=':', lw=1.2, alpha=0.6)))
+    xS, yS = POS[src]; xD, yD = POS[dst]
     has_rev = G.has_edge(dst, src)
-    rad = 0.18 if has_rev else 0.0
-    ax.annotate(
-        '',
-        xy=(xD, yD), xytext=(xS, yS),
-        arrowprops=dict(
-            arrowstyle='->', color=s['color'],
-            lw=s['lw'], alpha=s['alpha'],
-            linestyle=s['ls'],
-            connectionstyle=f'arc3,rad={rad}',
-            shrinkA=17, shrinkB=17,
-        ),
-        zorder=3,
-    )
+    rad = 0.12 if has_rev else 0.0
+    ax.annotate('', xy=(xD, yD), xytext=(xS, yS),
+        arrowprops=dict(arrowstyle='->', color=s['color'], lw=s['lw'],
+                        alpha=s['alpha'], linestyle=s['ls'],
+                        connectionstyle=f'arc3,rad={rad}',
+                        shrinkA=16, shrinkB=16), zorder=3)
 
 # ─── NŒUDS ───
 for nid in NODE_IDS:
     x, y = POS[nid]
-    ax.scatter(
-        x, y,
-        s=NODE_SIZES[nid],
-        color=COLORS[CATEGORIES[nid]],
-        zorder=5,
-        alpha=0.92,
-        edgecolors='white',
-        linewidths=2.0,
-    )
+    ax.scatter(x, y, s=NODE_SIZES[nid], color=COLORS[CATEGORIES[nid]],
+               alpha=0.92, edgecolors='white', linewidths=2.0, zorder=5)
 
-# ─── LABELS EXTERNES ───
-# Chaque label est placé au-dessus (ou à côté) du nœud avec fond coloré
+# ─── LABELS DIRECTIONNELS ───
 for nid in NODE_IDS:
     x, y = POS[nid]
-    dx, dy = LABEL_OFFSET[nid]
+    d = LABEL_DIR[nid]
+    dx, dy = OFFSETS_MAP[d]
     lx, ly = x + dx, y + dy
     clr = COLORS[CATEGORIES[nid]]
-    lbl = LABELS[nid]
+    ax.text(lx, ly, LABELS[nid],
+            ha=HA_MAP[d], va=VA_MAP[d],
+            fontsize=7.6, fontfamily=FONT, fontweight='bold',
+            color='white', multialignment='center', linespacing=1.2, zorder=8,
+            bbox=dict(boxstyle='round,pad=0.26', facecolor=clr,
+                      alpha=0.91, edgecolor='white', linewidth=0.9))
 
-    # ha dépend de la direction du label
-    ha_map = {
-        'FSB_C16':'right','GRU_SW':'right','Lazarus':'right','APT33':'right','MSS_APT10':'right',
-        'TEMP_V':'right',
-        'GCHQ':'left','ANSSI':'left','CISA':'left','FiveEyes':'left',
-    }
-    ha = ha_map.get(nid, 'center')
-    va = 'center' if ha in ('left','right') else 'bottom'
+# ─── ANNOTATIONS INTERMINISTÉRIEL LIO ───
+ax.annotate('LIO = compétence\ninterministérielle\n(DGSE + COMCYBER\n+ DGSI + SGDSN)',
+    xy=(3.2, -0.6), xytext=(1.4, 1.6),
+    fontsize=7, fontfamily=FONT, style='italic', color='#5B2C8D',
+    arrowprops=dict(arrowstyle='-', color='#5B2C8D', lw=0.8, alpha=0.6),
+    bbox=dict(boxstyle='round,pad=0.2', facecolor='#F3E5FF', alpha=0.8, edgecolor='#5B2C8D'),
+    zorder=9)
 
-    ax.text(
-        lx, ly, lbl,
-        ha=ha, va=va,
-        fontsize=8.2, fontfamily=FONT, fontweight='bold',
-        color='white',
-        multialignment='center',
-        linespacing=1.25,
-        zorder=8,
-        bbox=dict(
-            boxstyle='round,pad=0.28',
-            facecolor=clr,
-            alpha=0.92,
-            edgecolor='white',
-            linewidth=1.0,
-        ),
-    )
+# Annotation TRITON (Arabie Saoudite)
+ax.text(3.0, -5.2, 'Note : TRITON/TRISIS (2017) = cible Arabie Saoudite\n'
+        '(Petro Rabigh). Aucune opération TEMP.Veles contre\nopérateurs nucléaires FR documentée.',
+        ha='center', fontsize=7, fontfamily=FONT, style='italic', color='#BF5700',
+        bbox=dict(boxstyle='round,pad=0.3', facecolor='#FFF3E0', alpha=0.85,
+                  edgecolor='#BF5700', linewidth=0.8), zorder=9)
 
 # ─── LÉGENDES ───
 leg_nodes = [
     mpatches.Patch(facecolor=COLORS['offensif'],   label='Acteur offensif hostile'),
-    mpatches.Patch(facecolor=COLORS['proxy'],      label='Proxy / criminel / ambigu'),
+    mpatches.Patch(facecolor=COLORS['proxy'],      label='Proxy / contractor étatique'),
     mpatches.Patch(facecolor=COLORS['ambivalent'], label='Ambivalent (offensif & défenseur)'),
     mpatches.Patch(facecolor=COLORS['défenseur'],  label='Défenseur institutionnel'),
-    mpatches.Patch(facecolor=COLORS['normatif'],   label='Acteur normatif'),
-    mpatches.Patch(facecolor=COLORS['opérateur'],  label='Opérateur nucléaire civil'),
+    mpatches.Patch(facecolor=COLORS['normatif'],   label='Acteur normatif international'),
+    mpatches.Patch(facecolor=COLORS['opérateur'],  label='Opérateur / cible civile'),
 ]
-leg_edges = [
+leg_conf = [
+    mlines.Line2D([], [], color='#555', lw=2.6, ls='-',  label='Confiance élevée (source judiciaire/gouvern.)'),
+    mlines.Line2D([], [], color='#555', lw=1.8, ls='--', label='Confiance modérée (rapports TI multiples)'),
+    mlines.Line2D([], [], color='#AAA', lw=1.3, ls=':',  label='Confiance basse (capacité / inféré)'),
+]
+leg_types = [
     mlines.Line2D([], [], color='#C62828', lw=2.2, ls='-',  marker='>', ms=8,
-                  label='Opération offensive documentée'),
-    mlines.Line2D([], [], color='#E65100', lw=1.8, ls='--', marker='>', ms=8,
-                  label='Relation proxy / indirecte'),
+                  label='Opération offensive'),
+    mlines.Line2D([], [], color='#E65100', lw=1.8, ls='-',  marker='>', ms=8,
+                  label='Proxy / contractor'),
     mlines.Line2D([], [], color='#2E7D32', lw=2.0, ls='-',  marker='>', ms=8,
                   label='Coordination défensive'),
-    mlines.Line2D([], [], color='#607D8B', lw=1.6, ls=':',  marker='>', ms=8,
-                  label='Tension / asymétrie normative'),
+    mlines.Line2D([], [], color='#607D8B', lw=1.4, ls=':',  marker='>', ms=8,
+                  label='Tension / normative'),
 ]
-l1 = ax.legend(
-    handles=leg_nodes, title="Catégorie d'acteur",
-    title_fontsize=9, fontsize=8.5,
-    loc='upper left', bbox_to_anchor=(0.0, 1.0),
+l1 = ax.legend(handles=leg_nodes, title="Catégorie d'acteur",
+    title_fontsize=9, fontsize=8.5, loc='upper left', bbox_to_anchor=(0.0, 1.0),
     framealpha=0.94, edgecolor='#CCCCBB', facecolor='#FDFAF4',
-    borderpad=0.9, labelspacing=0.55,
-    prop={'family': FONT},
-)
-l1.get_title().set_fontfamily(FONT)
-ax.add_artist(l1)
+    borderpad=0.9, labelspacing=0.5, prop={'family': FONT})
+l1.get_title().set_fontfamily(FONT); ax.add_artist(l1)
 
-l2 = ax.legend(
-    handles=leg_edges, title='Type de relation',
-    title_fontsize=9, fontsize=8.5,
-    loc='lower left', bbox_to_anchor=(0.0, 0.0),
+l2 = ax.legend(handles=leg_conf, title='Niveau de confiance',
+    title_fontsize=9, fontsize=8.5, loc='lower left', bbox_to_anchor=(0.0, 0.0),
     framealpha=0.94, edgecolor='#CCCCBB', facecolor='#FDFAF4',
-    borderpad=0.9, labelspacing=0.55,
-    prop={'family': FONT},
-)
-l2.get_title().set_fontfamily(FONT)
-ax.add_artist(l2)
+    borderpad=0.9, labelspacing=0.5, prop={'family': FONT})
+l2.get_title().set_fontfamily(FONT); ax.add_artist(l2)
 
-for intensity, lbl in [(5, 'Intensité modérée (5)'), (9, 'Intensité élevée (9)')]:
-    ax.scatter([], [], s=400+intensity**2*28, color='#888877', alpha=0.75, label=lbl)
-l3 = ax.legend(
-    title='Taille = intensité documentée',
-    title_fontsize=9, fontsize=8.5,
-    loc='upper right', bbox_to_anchor=(1.0, 1.0),
+l3 = ax.legend(handles=leg_types, title='Type de relation',
+    title_fontsize=9, fontsize=8.5, loc='lower right', bbox_to_anchor=(1.0, 0.0),
     framealpha=0.94, edgecolor='#CCCCBB', facecolor='#FDFAF4',
-    borderpad=0.9, scatterpoints=1,
-    prop={'family': FONT},
-)
-l3.get_title().set_fontfamily(FONT)
+    borderpad=0.9, labelspacing=0.5, prop={'family': FONT})
+l3.get_title().set_fontfamily(FONT); ax.add_artist(l3)
 
-# ─── ANNOTATIONS ZONES ───
-# Zone offensive
-ax.text(-4.6, 3.6, 'ACTEURS\nOFFENSIFS',
-        ha='center', fontsize=8, fontfamily=FONT, color='#8B0000',
-        fontweight='bold', style='italic', alpha=0.5,
-        bbox=dict(boxstyle='round,pad=0.2', facecolor='#FDECEA', alpha=0.6, edgecolor='none'))
-# Zone défensive
-ax.text( 4.1, 3.4, 'ACTEURS\nDÉFENSEURS',
-        ha='center', fontsize=8, fontfamily=FONT, color='#1B5E20',
-        fontweight='bold', style='italic', alpha=0.5,
-        bbox=dict(boxstyle='round,pad=0.2', facecolor='#E8F5E9', alpha=0.6, edgecolor='none'))
+for intensity, lbl in [(5, 'Intensité 5'), (9, 'Intensité 9')]:
+    ax.scatter([], [], s=320+intensity**2*26, color='#888877', alpha=0.75, label=lbl)
+l4 = ax.legend(title='Taille = intensité documentée',
+    title_fontsize=9, fontsize=8.5, loc='upper right', bbox_to_anchor=(1.0, 1.0),
+    framealpha=0.94, edgecolor='#CCCCBB', facecolor='#FDFAF4',
+    borderpad=0.9, scatterpoints=1, prop={'family': FONT})
+l4.get_title().set_fontfamily(FONT)
 
 # ─── TITRE ───
-ax.set_title(
-    "Cartographie des acteurs dans l'espace cyber-nucléaire civil",
-    fontsize=18, fontfamily=FONT, fontweight='bold', color='#1A1A1A', pad=16,
-)
-fig.text(
-    0.5, 0.945, 'Relations documentées, 2010–2026',
-    ha='center', fontsize=12, fontfamily=FONT, style='italic', color='#444433',
-)
-fig.text(
-    0.5, 0.006,
-    'Sources primaires : DOJ Akulov Indictment 2022 (HAVEX / Wolf Creek) — ESET/CERT-UA '
-    '(Industroyer) — Dragos XENOTIME (TRITON 2017) — CISA AA24-038A (Volt Typhoon OT) — '
-    'Zetter K. (2014) Countdown to Zero Day (Stuxnet/Natanz) — NYT/Sanger (2016) '
-    '(NITRO ZEUS) — CISA AA22-083A, AA23-144A — LPM 2013 art.22 — '
-    'Mandiant 2022 (KillNet) — AIEA INFCIRC/225.',
-    ha='center', fontsize=7.2, fontfamily=FONT, style='italic', color='#555544',
-)
-
-# Annotation contextuelle AIEA
-ax.annotate(
-    'Normes\nnon contraignantes\n(INFCIRC/225)',
-    xy=(0.2, -2.4), xytext=(1.4, -3.2),
-    fontsize=7, fontfamily=FONT, style='italic', color='#1A237E',
-    arrowprops=dict(arrowstyle='-', color='#1A237E', lw=0.8, alpha=0.6),
-    zorder=9,
-)
+ax.set_title("Cartographie des acteurs dans l'espace cyber-nucléaire civil",
+    fontsize=18, fontfamily=FONT, fontweight='bold', color='#1A1A1A', pad=16)
+fig.text(0.5, 0.945, 'Relations documentées, 2010–2026 | Correction itération 4',
+    ha='center', fontsize=11, fontfamily=FONT, style='italic', color='#444433')
+fig.text(0.5, 0.006,
+    'Sources : DOJ Akulov Indictment 2022 (FSB C18, HAVEX/Wolf Creek) — DOJ Gladkikh 2022 (CNIIHM, TRITON/Arabie Saoudite) — '
+    'ESET/CERT-UA (Industroyer, Ukraine) — Dragos XENOTIME 2017 (TRITON) — CISA AA23-144A, AA24-038A (Volt Typhoon OT) — '
+    'NCSC/DoJ 2018 (APT10) — Zetter K. (2014) (Stuxnet/Natanz) — Mandiant/CERT-EU 2022-23 (KillNet contractor) — '
+    'CISA AA22-011A (Lazarus secteur énergie) — LPM 2013 art.22 — AIEA INFCIRC/225 Rev.5 — UKUSA Agreement.',
+    ha='center', fontsize=7.0, fontfamily=FONT, style='italic', color='#555544')
 
 ax.axis('off')
-ax.set_xlim(-5.8, 5.8)
-ax.set_ylim(-5.6, 5.2)
+ax.set_xlim(-7.0, 6.8)
+ax.set_ylim(-6.4, 5.8)
 plt.tight_layout(rect=[0, 0.04, 1, 0.94])
-
-fig.savefig('/home/user/maison-m-dina/figures/figure1_network.png',
-            dpi=300, bbox_inches='tight', facecolor=BG_COLOR)
-fig.savefig('/home/user/maison-m-dina/figures/figure1_network.svg',
-            format='svg', bbox_inches='tight', facecolor=BG_COLOR)
-print("Figure 1 — OK")
+fig.savefig('/home/user/maison-m-dina/figures/figure1_network.png', dpi=300, bbox_inches='tight', facecolor=BG_COLOR)
+fig.savefig('/home/user/maison-m-dina/figures/figure1_network.svg', format='svg', bbox_inches='tight', facecolor=BG_COLOR)
+print("Figure 1 — OK (itération 4)")
 plt.close()

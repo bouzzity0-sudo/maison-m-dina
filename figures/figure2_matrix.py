@@ -1,14 +1,23 @@
 """
-Figure 2 — Matrice posture × territoire C1-C9 — ITERATION 3
-Corrections : C7/C8 fusionnés, cluster C8-C9 étalé, X ambivalents différenciés,
-EDF plus visible avec label externe, adjustText avec shrink amélioré.
+Figure 2 — Matrice posture × territoire C1-C9 — ITERATION 4
+
+Corrections :
+- FSB Centre 18 (Unit 71330, DOJ 2022)
+- APT10 et Volt Typhoon séparés (deux groupes chinois distincts)
+- Lazarus et Kimsuky séparés (deux groupes RPDC distincts)
+- EDF / Framatome / Orano séparés
+- COMCYBER + DGA-MI ajoutés (piliers cyberdéfense FR)
+- Formes distinctes par catégorie (v, s, D, ^, p, o)
+- Labels directionnels manuels (adjustText retiré)
+- C9 tick à Y=9 (bande plus large pour cluster doctrinal)
+- Aucune confusion avec classification AIEA (C1-C9 = adaptation interne)
 """
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-from adjustText import adjust_text
+import matplotlib.lines as mlines
 
 BG_COLOR = '#F9F6EF'
 FONT = 'P052'
@@ -22,8 +31,18 @@ COLORS = {
     'opérateur':  '#546E7A',
 }
 
+# Marker shape by category
+MARKERS = {
+    'offensif':   'v',   # triangle down = attack
+    'proxy':      's',   # square = intermediary
+    'ambivalent': 'D',   # diamond = dual
+    'défenseur':  '^',   # triangle up = defense
+    'normatif':   'p',   # pentagon = institution
+    'opérateur':  'o',   # circle = civilian operator
+}
+
 # ─────────────────────────────────────────────
-# CHAÎNES C1–C9 (C7+C8 fusionnés en C7-C8)
+# CHAÎNES C1–C9 (C7+C8 fusionnés, C9 à Y=9)
 # ─────────────────────────────────────────────
 C_LABELS = {
     1: 'C1 — Mines\nd\'uranium',
@@ -32,113 +51,117 @@ C_LABELS = {
     4: 'C4 — Réacteur\nnucléaire',
     5: 'C5 — Réseau\nélectrique OT',
     6: 'C6 — Gestion\ndéchets',
-    7: 'C7-C8 — Transport /\nCybersystèmes',  # fusionné
-    8: 'C9 — Territoire\ndoctrinal',           # décalé
+    7: 'C7-C8 — Transport /\nCybersystèmes',
+    9: 'C9 — Territoire\ndoctrinal',
 }
-# Mapping numéro affiché → position Y sur le graphe
-Y_TICKS = [1, 2, 3, 4, 5, 6, 7, 8]
+Y_TICKS  = [1, 2, 3, 4, 5, 6, 7, 9]
 Y_LABELS = [C_LABELS[i] for i in Y_TICKS]
 
 # ─────────────────────────────────────────────
-# ACTEURS — positions recalculées
-# C9 (territoire doctrinal) = Y=8, C1 = Y=1
-# Cluster ambivalent C8-C9 étalé de 7.5 à 8.6
+# ACTEURS — (id, label, catégorie, x, y, intensité, label_dir)
+# x = posture stratégique  y = chaîne ciblée/concernée
+# label_dir : L=gauche R=droite U=haut D=bas
 # ─────────────────────────────────────────────
 ACTORS = [
-    # id, label, catégorie, pos_x, pos_y, intensité
-    ('FSB_C16',   'FSB\nCentre 16',          'offensif',   -0.88, 5.0, 9),
-    ('GRU_SW',    'GRU\nSandworm',            'offensif',   -0.80, 4.7, 9),
-    ('APT33',     'APT33 (Iran)',             'offensif',   -0.70, 4.2, 7),
-    ('MSS_APT10', 'MSS APT10 /\nVolt Typhoon','offensif',  -0.78, 5.3, 8),
-    ('Lazarus',   'Lazarus /\nKimsuky',       'offensif',   -0.68, 8.0, 8),  # cible doctrinal/nuclé
-    ('KillNet',   'KillNet',                 'proxy',      -0.52, 5.6, 5),
-    ('TEMP_V',    'TEMP.Veles',              'proxy',      -0.58, 3.8, 7),
-    # Ambivalents — X différenciés, Y étalés
-    ('NSA_CIA',   'NSA / CIA',              'ambivalent', -0.12, 7.5, 10),
-    ('Unit8200',  'Unit 8200\n(Israël)',     'ambivalent', -0.05, 2.0, 8),   # cible enrichissement
-    ('GCHQ',      'GCHQ (UK)',              'ambivalent',  0.14, 8.0, 7),
-    ('DGSE_LIO',  'DGSE / LIO\n(France)',   'ambivalent',  0.06, 8.4, 6),
-    # Défenseurs — X > 0.5, Y étalés
-    ('ANSSI',     'ANSSI /\nCERT-FR',       'défenseur',   0.76, 8.2, 8),
-    ('CISA',      'CISA / NSA\ndéfensif',   'défenseur',   0.84, 8.5, 9),
-    ('FiveEyes',  'Five Eyes',              'défenseur',   0.88, 8.8, 9),
+    # Offensifs (x < -0.5, label → L)
+    ('FSB_C18',  'FSB Centre 18\n(Unit 71330)',      'offensif',   -0.84, 4.6, 9, 'L'),
+    ('GRU_SW',   'GRU Sandworm\n(Unit 74455)',       'offensif',   -0.78, 5.2, 9, 'L'),
+    ('APT10',    'APT10\n(MSS / Stone Panda)',        'offensif',   -0.72, 3.0, 7, 'L'),
+    ('VoltT',    'Volt Typhoon\n(Bronze Silhouette)', 'offensif',   -0.76, 5.6, 8, 'L'),
+    ('Lazarus',  'Lazarus Group\n(Bureau 121)',       'offensif',   -0.68, 8.4, 8, 'L'),
+    ('Kimsuky',  'Kimsuky\n(RGB / Unité 180)',        'offensif',   -0.64, 2.2, 7, 'L'),
+    ('APT33',    'APT33\n(IRGC-MOIS)',               'offensif',   -0.70, 4.2, 7, 'L'),
+    # Proxy (x ≈ -0.5)
+    ('KillNet',  'KillNet',                         'proxy',      -0.52, 5.9, 6, 'L'),
+    ('TEMP_V',   'TEMP.Veles\n(CNIIHM)',             'proxy',      -0.56, 4.0, 8, 'L'),
+    # Ambivalents — X différenciés
+    ('NSA_CIA',  'NSA / CIA\n(USA)',                 'ambivalent', -0.12, 7.8,10, 'L'),
+    ('Unit8200', 'Unit 8200\n(AMAN, Israël)',         'ambivalent',  0.02, 2.4, 8, 'R'),
+    ('DGSE_LIO', 'DGSE / LIO\n(France)',             'ambivalent',  0.09, 8.6, 6, 'R'),
+    # Défenseurs (x > 0.5, label → R ou L alterné)
+    ('DGA_MI',   'DGA-MI\n(Rennes)',                'défenseur',   0.60, 7.2, 6, 'L'),
+    ('COMCYBER', 'COMCYBER\n(France)',              'défenseur',   0.66, 7.6, 8, 'L'),
+    ('ANSSI',    'ANSSI /\nCERT-FR',               'défenseur',   0.74, 8.1, 8, 'R'),
+    ('CISA',     'CISA / NSA\ndéfensif',            'défenseur',   0.82, 8.5, 9, 'L'),
+    ('GCHQ',     'GCHQ\n(NCSC UK)',                'défenseur',   0.86, 9.0, 7, 'R'),
+    ('FiveEyes', 'Five Eyes',                       'défenseur',   0.90, 9.5, 9, 'L'),
     # Normatif
-    ('AIEA',      'AIEA',                   'normatif',    0.70, 8.6, 7),
-    # Opérateur — plus grand et plus visible
-    ('EDF_op',    'EDF / Framatome\n/ Orano','opérateur',  0.12, 4.4, 8),
+    ('AIEA',     'AIEA',                            'normatif',    0.70, 9.8, 7, 'R'),
+    # Opérateurs FR séparés
+    ('EDF',      'EDF\n(exploitation)',             'opérateur',   0.14, 4.4, 7, 'R'),
+    ('Framatome','Framatome\n(équipements)',         'opérateur',   0.20, 3.2, 6, 'R'),
+    ('Orano',    'Orano\n(cycle combustible)',       'opérateur',   0.10, 1.7, 6, 'R'),
 ]
+
+# ─────────────────────────────────────────────
+# OFFSETS LABELS (en coordonnées data)
+# ─────────────────────────────────────────────
+OFFSETS_MAP = {'L': (-0.055, 0.0), 'R': (0.055, 0.0),
+               'U': (0.0, 0.30),   'D': (0.0, -0.30)}
+HA_MAP = {'L': 'right', 'R': 'left', 'U': 'center', 'D': 'center'}
+VA_MAP = {'L': 'center', 'R': 'center', 'U': 'bottom', 'D': 'top'}
 
 # ─────────────────────────────────────────────
 # FIGURE
 # ─────────────────────────────────────────────
-fig, ax = plt.subplots(figsize=(18, 13))
+fig, ax = plt.subplots(figsize=(20, 14))
 fig.patch.set_facecolor(BG_COLOR)
 ax.set_facecolor(BG_COLOR)
 
-# Zones de fond
-ax.axvspan(-1.05, -0.35, color='#FDECEA', alpha=0.55, zorder=0)
-ax.axvspan(-0.35,  0.35, color='#F3E5FF', alpha=0.40, zorder=0)
-ax.axvspan( 0.35,  1.05, color='#E8F5E9', alpha=0.55, zorder=0)
+# Zones de fond (posture)
+ax.axvspan(-1.10, -0.35, color='#FDECEA', alpha=0.50, zorder=0)
+ax.axvspan(-0.35,  0.35, color='#F3E5FF', alpha=0.35, zorder=0)
+ax.axvspan( 0.35,  1.12, color='#E8F5E9', alpha=0.50, zorder=0)
 
-# Lignes horizontales
+# Bande C9 territoire doctrinal
+ax.axhspan(7.0, 10.6, color='#E3F2FD', alpha=0.25, zorder=0)
+ax.text(-1.08, 10.3, 'Territoire doctrinal / institutionnel (C9)',
+        ha='left', fontsize=7.5, fontfamily=FONT, style='italic',
+        color='#1A237E', alpha=0.65, zorder=1)
+
+# Lignes horizontales des chaînes
 for c in Y_TICKS:
     ax.axhline(c, color='#D5D0C4', lw=0.6, zorder=1, alpha=0.7)
 
-# Séparateurs verticaux des zones
+# Séparateurs verticaux
 ax.axvline(-0.35, color='#BBBBAA', lw=0.8, linestyle='--', zorder=1, alpha=0.7)
 ax.axvline( 0.35, color='#BBBBAA', lw=0.8, linestyle='--', zorder=1, alpha=0.7)
 ax.axvline( 0.0,  color='#CCCCBB', lw=0.5, linestyle=':',  zorder=1, alpha=0.5)
 
-# ─── Bulles ───
-texts = []
-for (aid, label, cat, px, py, intensity) in ACTORS:
-    size = 150 + intensity**2 * 25
+# ─── Bulles + Labels ───
+for (aid, label, cat, px, py, intensity, ldir) in ACTORS:
+    size = 160 + intensity**2 * 24
+    marker = MARKERS[cat]
     ax.scatter(
         px, py, s=size,
         color=COLORS[cat],
-        alpha=0.85,
+        marker=marker,
+        alpha=0.88,
         edgecolors='white',
         linewidths=1.8,
         zorder=5,
     )
-    # Label externe (pas à l'intérieur de la bulle)
-    t = ax.text(
-        px, py + 0.08, label,
-        fontsize=7.8, fontfamily=FONT, fontweight='bold',
-        ha='center', va='bottom', color='white',
-        multialignment='center', linespacing=1.2,
-        zorder=10,
+    dx, dy = OFFSETS_MAP[ldir]
+    lx, ly = px + dx, py + dy
+    ax.text(
+        lx, ly, label,
+        fontsize=7.4, fontfamily=FONT, fontweight='bold',
+        ha=HA_MAP[ldir], va=VA_MAP[ldir], color='white',
+        multialignment='center', linespacing=1.2, zorder=10,
         bbox=dict(
             boxstyle='round,pad=0.22',
             facecolor=COLORS[cat],
-            alpha=0.88,
+            alpha=0.90,
             edgecolor='white',
             linewidth=0.8,
         ),
     )
-    texts.append(t)
-
-# adjustText pour résoudre collisions résiduelles
-adjust_text(
-    texts,
-    x=[a[3] for a in ACTORS],
-    y=[a[4] for a in ACTORS],
-    ax=ax,
-    expand_text=(1.4, 1.6),
-    expand_points=(1.6, 1.8),
-    force_text=(0.8, 0.9),
-    force_points=(0.5, 0.5),
-    avoid_self=True,
-    autoalign='xy',
-    arrowprops=dict(arrowstyle='-', color='#999988', lw=0.7),
-    min_arrow_len=8,
-)
 
 # ─────────────────────────────────────────────
 # AXES
 # ─────────────────────────────────────────────
-ax.set_xlim(-1.05, 1.08)
-ax.set_ylim(0.2, 9.4)
+ax.set_xlim(-1.14, 1.14)
+ax.set_ylim(0.3, 10.8)
 
 ax.set_xticks([-0.70, -0.35, 0.0, 0.35, 0.70])
 ax.set_xticklabels(
@@ -161,22 +184,39 @@ ax.set_ylabel('Chaîne nucléaire civile ciblée / concernée',
     fontsize=12, fontfamily=FONT, fontweight='bold', color='#2A2A1A', labelpad=12)
 
 # ─────────────────────────────────────────────
-# LÉGENDE
+# NOTE C7-C8 fusionnés
 # ─────────────────────────────────────────────
-legend_cats = [
-    mpatches.Patch(facecolor=COLORS['offensif'],   label='Acteur offensif hostile'),
-    mpatches.Patch(facecolor=COLORS['proxy'],      label='Proxy / criminel / ambigu'),
-    mpatches.Patch(facecolor=COLORS['ambivalent'], label='Ambivalent (offensif & défenseur)'),
-    mpatches.Patch(facecolor=COLORS['défenseur'],  label='Défenseur institutionnel'),
-    mpatches.Patch(facecolor=COLORS['normatif'],   label='Acteur normatif'),
-    mpatches.Patch(facecolor=COLORS['opérateur'],  label='Opérateur nucléaire civil'),
-]
-for intensity, lbl in [(5, 'Intensité 5 (modérée)'), (9, 'Intensité 9 (élevée)')]:
-    ax.scatter([], [], s=150+intensity**2*25, color='#888877', alpha=0.75, label=lbl)
+ax.text(
+    0.0, 6.62, 'N.B. — C7-C8 regroupés : aucun acteur documenté\n'
+    'ciblant spécifiquement transport ou cybersystèmes\ntransverses de façon isolée',
+    ha='center', fontsize=7, fontfamily=FONT, style='italic', color='#888877',
+    bbox=dict(boxstyle='round,pad=0.3', facecolor='#F5F5EE', alpha=0.85, edgecolor='#CCCCBB'),
+    zorder=8,
+)
+
+# ─────────────────────────────────────────────
+# LÉGENDE CATÉGORIES + FORMES
+# ─────────────────────────────────────────────
+def make_marker_handle(cat):
+    return mlines.Line2D([], [],
+        color=COLORS[cat], marker=MARKERS[cat],
+        linestyle='None', markersize=10, mew=1.5, mec='white',
+        label={
+            'offensif':   'Acteur offensif hostile',
+            'proxy':      'Proxy / contractor étatique',
+            'ambivalent': 'Ambivalent (offensif & défenseur)',
+            'défenseur':  'Défenseur institutionnel',
+            'normatif':   'Acteur normatif international',
+            'opérateur':  'Opérateur nucléaire civil',
+        }[cat]
+    )
+
+legend_handles = [make_marker_handle(c) for c in
+    ['offensif','proxy','ambivalent','défenseur','normatif','opérateur']]
 
 leg1 = ax.legend(
-    handles=legend_cats,
-    title="Catégorie d'acteur",
+    handles=legend_handles,
+    title="Catégorie (forme = type)",
     title_fontsize=9, fontsize=8.5,
     loc='lower left', bbox_to_anchor=(0.0, 0.0),
     framealpha=0.94, edgecolor='#CCCCBB', facecolor='#FDFAF4',
@@ -186,6 +226,9 @@ leg1 = ax.legend(
 leg1.get_title().set_fontfamily(FONT)
 ax.add_artist(leg1)
 
+# Légende intensité
+for intensity, lbl in [(5, 'Intensité 5 (modérée)'), (9, 'Intensité 9 (élevée)')]:
+    ax.scatter([], [], s=160+intensity**2*24, color='#888877', alpha=0.75, label=lbl)
 leg2 = ax.legend(
     title='Taille = intensité documentée',
     title_fontsize=9, fontsize=8.5,
@@ -196,15 +239,6 @@ leg2 = ax.legend(
 )
 leg2.get_title().set_fontfamily(FONT)
 
-# Note C7-C8 fusionnés
-ax.text(
-    0.0, 6.7, 'N.B. - C7-C8 regroupés : aucun acteur documenté\n'
-    'ciblant spécifiquement le transport ou les cybersystèmes\ntransverses de façon isolée',
-    ha='center', fontsize=7, fontfamily=FONT, style='italic', color='#888877',
-    bbox=dict(boxstyle='round,pad=0.3', facecolor='#F5F5EE', alpha=0.8, edgecolor='#CCCCBB'),
-    zorder=8,
-)
-
 # ─────────────────────────────────────────────
 # TITRE & NOTES
 # ─────────────────────────────────────────────
@@ -214,16 +248,16 @@ ax.set_title(
 )
 fig.text(
     0.5, 0.934,
-    'Intensité documentée des activités, 2010–2026',
+    'Intensité documentée des activités, 2010–2026 | Itération 4',
     ha='center', fontsize=11, fontfamily=FONT, style='italic', color='#444433',
 )
 fig.text(
     0.5, 0.005,
-    'Sources : CISA AA22-083A, AA23-144A, AA24-038A — DOJ Akulov Indictment 2022 — '
-    'Dragos XENOTIME/TRITON 2017 — ESET Industroyer — Zetter K. (2014) — '
-    'NYT/Sanger (2016) — Mandiant 2022 — LPM 2013 art.22 — AIEA INFCIRC/225 — '
-    'UKUSA Agreement. | C1-C9 : classification adaptée AIEA/NSS-17-T (2011). '
-    'C7-C8 fusionnés : absence de ciblage isolé documenté.',
+    'Sources : DOJ Akulov 2022 (FSB C18, HAVEX) — CISA AA23-144A/AA24-038A (Volt Typhoon OT) — '
+    'NCSC/DoJ 2018 (APT10 / MSS) — Zetter K. 2014 (Stuxnet/Natanz, Unit 8200) — '
+    'Dragos XENOTIME (TRITON/CNIIHM) — CISA AA22-011A (Lazarus énergie) — '
+    'HHS/DHS 2020 (Kimsuky enrichissement) — LPM 2013 art.22 — AIEA INFCIRC/225 Rev.5 — UKUSA Agreement. '
+    '| C1-C9 : classification adaptée AIEA/NSS-17-T (2011). C7-C8 fusionnés : absence ciblage isolé documenté.',
     ha='center', fontsize=7.0, fontfamily=FONT, style='italic', color='#555544',
 )
 
@@ -233,5 +267,5 @@ out_png = '/home/user/maison-m-dina/figures/figure2_matrix.png'
 out_svg = '/home/user/maison-m-dina/figures/figure2_matrix.svg'
 fig.savefig(out_png, dpi=300, bbox_inches='tight', facecolor=BG_COLOR)
 fig.savefig(out_svg, format='svg', bbox_inches='tight', facecolor=BG_COLOR)
-print("Figure 2 — OK")
+print("Figure 2 — OK (itération 4)")
 plt.close()
